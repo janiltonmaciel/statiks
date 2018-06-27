@@ -1,12 +1,9 @@
-# Binaries for programs and plugins
-*.exe
-*.exe~
-*.dll
-*.so
-*.dylib
+.DS_Store
+.idea/
+.keep
+.GOPATH
+vendor
+statiks
+statiks-*.tar.gz
+dist/
 
-# Test binary, build with `go test -c`
-*.test
-
-# Output of the go coverage tool, specifically when used with LiteIDE
-*.out
