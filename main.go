@@ -1,13 +1,17 @@
 package main
 
 import (
-	"flag"
 	"fmt"
+	"log"
 	"net/http"
+	"os"
 	"path/filepath"
 
 	"github.com/codegangsta/negroni"
+	"github.com/janiltonmaciel/statiks/core"
 	"github.com/phyber/negroni-gzip/gzip"
+	"github.com/urfave/cli"
+
 	"github.com/rs/cors"
 )
 
@@ -16,11 +20,6 @@ var (
 	commit  string
 	date    string
 	author  = "Janilton Maciel <janilton@gmail.com>"
-
-	printVersion bool
-	port         string
-	path         string
-	gZip         bool
 )
 
 func Cors() *cors.Cors {
@@ -50,26 +49,56 @@ func NoCache(h http.Handler) http.Handler {
 	return http.HandlerFunc(fn)
 }
 
-func initFlags() {
-	flag.BoolVar(&printVersion, "version", false, "Output version")
-	flag.StringVar(&port, "port", "9080", "The port to listen to for incoming HTTP connections. Defaults to 9080")
-	flag.StringVar(&path, "path", ".", "The root of the server file tree")
-	flag.BoolVar(&gZip, "gzip", true, "Enabled gzip")
-	flag.Parse()
+func init() {
+	cli.AppHelpTemplate = core.AppHelpTemplate
+	cli.VersionPrinter = core.VersionPrinter(commit, date)
 }
 
 func main() {
 
-	initFlags()
+	app := cli.NewApp()
+	app.Name = "statiks"
+	app.Usage = "a simple http server to serve static files"
+	app.UsageText = "statiks [options]"
+	app.Author = author
+	app.Version = version
 
-	if printVersion {
-		printStatiksVersion()
-		return
+	app.Flags = []cli.Flag{
+		cli.StringFlag{
+			Name:  "path, r",
+			Value: ".",
+			Usage: "The root of the server file tree",
+		},
+
+		cli.StringFlag{
+			Name:  "port, p",
+			Value: "9080",
+			Usage: "The port to listen to for incoming HTTP connections",
+		},
+
+		cli.BoolFlag{
+			Name:  "gzip, z",
+			Usage: "Enabled gzip",
+		},
 	}
+
+	app.Action = action
+
+	err := app.Run(os.Args)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+}
+
+func action(c *cli.Context) error {
+	path := c.String("path")
+	port := c.String("port")
+	gZip := c.Bool("gzip")
 
 	docroot, err := filepath.Abs(path)
 	if err != nil {
-		fmt.Printf("Error: %v", err)
+		return err
 	}
 
 	fmt.Println("*******************************")
@@ -92,11 +121,5 @@ func main() {
 	n.UseHandler(mux)
 
 	n.Run(":" + port)
-}
-
-func printStatiksVersion() {
-	fmt.Println("Version:", version)
-	fmt.Println("Author:", author)
-	fmt.Println("Commit:", commit)
-	fmt.Println("Date:", date)
+	return nil
 }
