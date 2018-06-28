@@ -20,6 +20,12 @@
   version = "v1.4.0"
 
 [[projects]]
+  name = "github.com/urfave/cli"
+  packages = ["."]
+  revision = "cfb38830724cc34fedffe9a2a29fb54fa9169cd1"
+  version = "v1.20.0"
+
+[[projects]]
   name = "github.com/urfave/negroni"
   packages = ["."]
   revision = "5dbbc83f748fc3ad38585842b0aedab546d0ea1e"
@@ -28,6 +34,6 @@
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "4ed38094d9eaa5debb5c7e8e86c93c43592b6f41aefb14e387ff86e01c85f67d"
+  inputs-digest = "7a36e8e007c01b9049069e80f041e6a74882311c5fd2dfc6f9104ec16953009a"
   solver-name = "gps-cdcl"
   solver-version = 1
