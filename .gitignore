@@ -6,4 +6,5 @@ vendor
 statiks
 statiks-*.tar.gz
 dist/
+gin-bin
 
