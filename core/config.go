@@ -7,22 +7,26 @@ import (
 )
 
 type statiksConfig struct {
-	directory string
-	host      string
-	port      string
-	hidden    bool
-	cache     bool
-	origins   []string
-	methods   []string
-	compress  bool
+	path     string
+	host     string
+	port     string
+	hidden   bool
+	maxage   string
+	origins  []string
+	methods  []string
+	compress bool
 }
 
 func getStatiksConfig(c *cli.Context) (config statiksConfig) {
-	config.directory = c.String("directory")
+	if c.Args().Get(0) == "" {
+		config.path = "."
+	} else {
+		config.path = c.Args().Get(0)
+	}
 	config.host = getHost(c.String("host"))
 	config.port = c.String("port")
 	config.hidden = c.Bool("hidden")
-	config.cache = c.Bool("cache")
+	config.maxage = c.String("max-age")
 	config.origins = getCors(c.String("cors-origins"))
 	config.methods = getCors(c.String("cors-methods"))
 	config.compress = c.Bool("compress")

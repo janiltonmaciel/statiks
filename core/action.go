@@ -39,16 +39,16 @@ func MainAction(c *cli.Context) error {
 
 	config := getStatiksConfig(c)
 
-	docroot, err := filepath.Abs(config.directory)
+	docroot, err := filepath.Abs(config.path)
 	if err != nil {
 		return err
 	}
 
 	fmt.Println("*******************************")
 	fmt.Printf("host: http://%s:%s\n", config.host, config.port)
-	fmt.Printf("directory: %s\n", config.directory)
+	fmt.Printf("path: %s\n", config.path)
 	fmt.Printf("hidden: %t\n", config.hidden)
-	fmt.Printf("cache: %t\n", config.cache)
+	fmt.Printf("max-age: %s\n", config.maxage)
 	fmt.Printf("origins: %s\n", config.origins)
 	fmt.Printf("methods: %s\n", config.methods)
 	fmt.Printf("compress: %t\n", config.compress)

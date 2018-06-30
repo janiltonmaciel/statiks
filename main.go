@@ -25,18 +25,12 @@ func main() {
 	app := cli.NewApp()
 	app.Name = "statiks"
 	app.Usage = "a simple http server to serve static files"
-	app.UsageText = "statiks [OPTIONS]"
+	app.UsageText = "statiks [OPTIONS] path"
 	app.Author = author
 	app.Version = version
 	app.Action = core.MainAction
 
 	app.Flags = []cli.Flag{
-		cli.StringFlag{
-			Name:  "directory, d",
-			Value: ".",
-			Usage: "the directory of static file",
-		},
-
 		cli.StringFlag{
 			Name:  "host, t",
 			Value: "localhost",
@@ -54,9 +48,9 @@ func main() {
 			Usage: "allow transfer of hidden files (default to false)",
 		},
 
-		cli.BoolFlag{
-			Name:  "cache, z",
-			Usage: "enable cache (http 304) responses  (default to false)",
+		cli.StringFlag{
+			Name:  "max-age, a",
+			Usage: "browser cache max-age in milliseconds (default: 0, no-cache)",
 		},
 
 		cli.StringFlag{
