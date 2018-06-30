@@ -4,7 +4,7 @@ import (
 	"log"
 	"os"
 
-	"github.com/janiltonmaciel/statiks/core"
+	"github.com/janiltonmaciel/statiks/lib"
 	"github.com/urfave/cli"
 )
 
@@ -16,8 +16,8 @@ var (
 )
 
 func init() {
-	cli.AppHelpTemplate = core.AppHelpTemplate
-	cli.VersionPrinter = core.VersionPrinter(commit, date)
+	cli.AppHelpTemplate = lib.AppHelpTemplate
+	cli.VersionPrinter = lib.VersionPrinter(commit, date)
 }
 
 func main() {
@@ -28,7 +28,7 @@ func main() {
 	app.UsageText = "statiks [OPTIONS] path"
 	app.Author = author
 	app.Version = version
-	app.Action = core.MainAction
+	app.Action = lib.MainAction
 
 	app.Flags = []cli.Flag{
 		cli.StringFlag{
