@@ -45,13 +45,7 @@ OPTIONS:
 
 VERSION:
    {{ .Version }}
-{{end}}
-
-{{- if .Description}}
-
-DESCRIPTION:
-   {{.Description}}
-{{end}}
+{{- end}}
 
 {{- if len .Authors}}
 

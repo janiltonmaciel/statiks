@@ -12,13 +12,6 @@ import (
 	"github.com/urfave/negroni"
 )
 
-type statiksConfig struct {
-	path   string
-	port   string
-	gzip   bool
-	hidden bool
-}
-
 type neuteredFileSystem struct {
 	fs     http.FileSystem
 	hidden bool
@@ -44,22 +37,21 @@ func (nfs neuteredFileSystem) Open(path string) (http.File, error) {
 
 func MainAction(c *cli.Context) error {
 
-	config := statiksConfig{}
-	config.path = c.String("path")
-	config.port = c.String("port")
-	config.gzip = c.Bool("gzip")
-	config.hidden = c.Bool("hidden")
+	config := getStatiksConfig(c)
 
-	docroot, err := filepath.Abs(config.path)
+	docroot, err := filepath.Abs(config.directory)
 	if err != nil {
 		return err
 	}
 
 	fmt.Println("*******************************")
-	fmt.Printf("host: http://localhost:%s\n", config.port)
-	fmt.Printf("path: %s\n", config.path)
-	fmt.Printf("gzip: %t\n", config.gzip)
+	fmt.Printf("host: http://%s:%s\n", config.host, config.port)
+	fmt.Printf("directory: %s\n", config.directory)
 	fmt.Printf("hidden: %t\n", config.hidden)
+	fmt.Printf("cache: %t\n", config.cache)
+	fmt.Printf("origins: %s\n", config.origins)
+	fmt.Printf("methods: %s\n", config.methods)
+	fmt.Printf("compress: %t\n", config.compress)
 	fmt.Println("*******************************")
 
 	nss := neuteredFileSystem{
@@ -72,13 +64,13 @@ func MainAction(c *cli.Context) error {
 	mux.Handle("/", NoCache(fs))
 
 	n := negroni.Classic()
-	if config.gzip {
+	if config.compress {
 		n.Use(gzip.Gzip(gzip.BestSpeed))
 	}
 	n.Use(Cors())
 	n.UseHandler(mux)
 
-	n.Run(":" + config.port)
+	n.Run(config.host + ":" + config.port)
 	return nil
 }
 
