@@ -40,6 +40,16 @@ OPTIONS:
 	{{- end -}}
 {{- end }}
 
+EXAMPLES
+	- start server at http://localhost:9000 serving "." with allowed transfer of hidden files
+			statiks -p 9000 --hidden
+
+	- start server at http://localhost:9080 serving "~/Projects" with allowed methods "GET, POST"
+			statiks -m "GET, POST" ~/Projects
+
+	- start server at http://192.168.1.100:9080 serving "~/Data" with enabled gzip compression
+			statiks -t 192.168.1.100 --compress ~/Data
+
 
 {{- if .Version }}
 
