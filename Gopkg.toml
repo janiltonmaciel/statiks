@@ -26,8 +26,8 @@
 
 
 [[constraint]]
-  name = "github.com/codegangsta/negroni"
-  version = "0.3.0"
+  branch = "master"
+  name = "github.com/janiltonmaciel/middleware"
 
 [[constraint]]
   branch = "master"
@@ -36,6 +36,14 @@
 [[constraint]]
   name = "github.com/rs/cors"
   version = "1.4.0"
+
+[[constraint]]
+  name = "github.com/urfave/cli"
+  version = "1.20.0"
+
+[[constraint]]
+  name = "github.com/urfave/negroni"
+  version = "0.3.0"
 
 [prune]
   go-tests = true

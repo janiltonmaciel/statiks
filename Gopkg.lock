@@ -2,10 +2,28 @@
 
 
 [[projects]]
-  name = "github.com/codegangsta/negroni"
+  name = "github.com/Sirupsen/logrus"
   packages = ["."]
-  revision = "5dbbc83f748fc3ad38585842b0aedab546d0ea1e"
-  version = "v0.3.0"
+  revision = "c155da19408a8799da419ed3eeb0cb5db0ad5dbc"
+  version = "v1.0.5"
+
+[[projects]]
+  branch = "master"
+  name = "github.com/janiltonmaciel/errors"
+  packages = ["."]
+  revision = "56168dc63965743f1f040a4ca2ffcd2e938adc7a"
+
+[[projects]]
+  branch = "master"
+  name = "github.com/janiltonmaciel/middleware"
+  packages = ["."]
+  revision = "6f62dfa670bfdf4346244974aba6d393be4fe2ce"
+
+[[projects]]
+  branch = "master"
+  name = "github.com/janiltonmaciel/render"
+  packages = ["."]
+  revision = "2bdc3a3be89d8e7f0d40bced2a5e4d27a6ff4ae4"
 
 [[projects]]
   branch = "master"
@@ -31,9 +49,24 @@
   revision = "5dbbc83f748fc3ad38585842b0aedab546d0ea1e"
   version = "v0.3.0"
 
+[[projects]]
+  branch = "master"
+  name = "golang.org/x/crypto"
+  packages = ["ssh/terminal"]
+  revision = "a49355c7e3f8fe157a85be2f77e6e269a0f89602"
+
+[[projects]]
+  branch = "master"
+  name = "golang.org/x/sys"
+  packages = [
+    "unix",
+    "windows"
+  ]
+  revision = "7138fd3d9dc8335c567ca206f4333fb75eb05d56"
+
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "7a36e8e007c01b9049069e80f041e6a74882311c5fd2dfc6f9104ec16953009a"
+  inputs-digest = "b6164c7ced083fe93fdcbfd4e06f2704c9081523ac8fac44205b33854607ea1f"
   solver-name = "gps-cdcl"
   solver-version = 1

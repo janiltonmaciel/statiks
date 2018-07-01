@@ -5,6 +5,7 @@ import (
 	"net/http"
 	"path/filepath"
 
+	"github.com/janiltonmaciel/middleware"
 	"github.com/phyber/negroni-gzip/gzip"
 	"github.com/urfave/cli"
 	"github.com/urfave/negroni"
@@ -14,6 +15,10 @@ func MainAction(c *cli.Context) error {
 
 	config := getStatiksConfig(c)
 	cors := getCors(config)
+	logger := middleware.NewLogger(
+		"INFO",
+		"statiks",
+	)
 
 	docroot, err := filepath.Abs(config.path)
 	if err != nil {
@@ -46,7 +51,10 @@ func MainAction(c *cli.Context) error {
 	mux := http.NewServeMux()
 	mux.Handle("/", handler)
 
-	n := negroni.Classic()
+	n := negroni.New(
+		negroni.NewRecovery(),
+		logger,
+	)
 	if config.compress {
 		n.Use(gzip.Gzip(gzip.BestSpeed))
 	}
