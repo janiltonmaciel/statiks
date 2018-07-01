@@ -1,8 +1,34 @@
 package lib
 
 import (
+	"net/http"
+	"os"
+	"path/filepath"
 	"runtime"
 )
+
+type neuteredFileSystem struct {
+	fs     http.FileSystem
+	hidden bool
+}
+
+func (nfs neuteredFileSystem) Open(path string) (http.File, error) {
+
+	// not allowed hidden file
+	if !nfs.hidden {
+		base := filepath.Base(path)
+		if IsHidden(base) {
+			return nil, os.ErrNotExist
+		}
+	}
+
+	f, err := nfs.fs.Open(path)
+	if err != nil {
+		return nil, err
+	}
+
+	return f, nil
+}
 
 func IsHidden(filename string) bool {
 	if runtime.GOOS == "windows" {

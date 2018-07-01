@@ -23,12 +23,12 @@ func getStatiksConfig(c *cli.Context) (config statiksConfig) {
 	} else {
 		config.path = c.Args().Get(0)
 	}
-	config.host = getHost(c.String("host"))
+	config.host = getContextHost(c.String("host"))
 	config.port = c.String("port")
 	config.hidden = c.Bool("hidden")
-	config.maxage = c.String("max-age")
-	config.origins = getCors(c.String("cors-origins"))
-	config.methods = getCors(c.String("cors-methods"))
+	config.maxage = getContextMaxAge(c.String("max-age"))
+	config.origins = getContextCors(c.String("cors-origins"))
+	config.methods = getContextCors(c.String("cors-methods"))
 	config.compress = c.Bool("compress")
 
 	return config
@@ -39,10 +39,18 @@ var hostReplacer = strings.NewReplacer(
 	"https://", "",
 )
 
-func getHost(host string) string {
+func getContextHost(host string) string {
 	return hostReplacer.Replace(host)
 }
 
-func getCors(value string) []string {
+func getContextCors(value string) []string {
 	return strings.Split(value, ",")
+}
+
+func getContextMaxAge(value string) string {
+	maxge := "0"
+	if value != "" {
+		maxge = value
+	}
+	return maxge
 }
