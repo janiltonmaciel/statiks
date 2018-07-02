@@ -4,9 +4,9 @@
 
 #### Binaries
 
-- **darwin (macOS)** [amd64](https://github.com/janiltonmaciel/statiks/releases/download/0.0.1/statiks_0.0.1_macOS_amd64.tar.gz)
-- **linux** [386](https://github.com/janiltonmaciel/statiks/releases/download/0.0.1/statiks_0.0.1_linux_386.tar.gz) / [amd64](https://github.com/janiltonmaciel/statiks/releases/download/0.0.1/statiks_0.0.1_linux_amd64.tar.gz)
-- **windows** [386](https://github.com/janiltonmaciel/statiks/releases/download/0.0.1/statiks_0.0.1_windows_386.zip) / [amd64](https://github.com/janiltonmaciel/statiks/releases/download/0.0.1/statiks_0.0.1_windows_amd64.zip)
+- **darwin (macOS)** [amd64](https://github.com/janiltonmaciel/statiks/releases/download/0.1.0/statiks_0.1.0_macOS_amd64.tar.gz)
+- **linux** [386](https://github.com/janiltonmaciel/statiks/releases/download/0.1.0/statiks_0.1.0_linux_386.tar.gz) / [amd64](https://github.com/janiltonmaciel/statiks/releases/download/0.1.0/statiks_0.1.0_linux_amd64.tar.gz)
+- **windows** [386](https://github.com/janiltonmaciel/statiks/releases/download/0.1.0/statiks_0.1.0_windows_386.zip) / [amd64](https://github.com/janiltonmaciel/statiks/releases/download/0.1.0/statiks_0.1.0_windows_amd64.zip)
 
 #### Via Homebrew (macOS)
 ```bash
