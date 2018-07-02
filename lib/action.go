@@ -25,15 +25,17 @@ func MainAction(c *cli.Context) error {
 		return err
 	}
 
-	fmt.Println("*******************************")
-	fmt.Printf("host: http://%s:%s\n", config.host, config.port)
+	fmt.Println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+	fmt.Printf("host: %s\n", config.host)
+	fmt.Printf("port: %s\n", config.port)
 	fmt.Printf("path: %s\n", config.path)
 	fmt.Printf("hidden: %t\n", config.hidden)
 	fmt.Printf("max-age: %s\n", config.maxage)
 	fmt.Printf("origins: %s\n", config.origins)
 	fmt.Printf("methods: %s\n", config.methods)
 	fmt.Printf("compress: %t\n", config.compress)
-	fmt.Println("*******************************")
+	fmt.Println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+	fmt.Println("")
 
 	nss := neuteredFileSystem{
 		fs:     http.Dir(docroot),
@@ -61,6 +63,9 @@ func MainAction(c *cli.Context) error {
 
 	n.Use(cors)
 	n.UseHandler(mux)
-	n.Run(config.host + ":" + config.port)
-	return nil
+
+	addr := config.host + ":" + config.port
+	fmt.Printf("[statiks] Running on http://%s\n\n", addr)
+
+	return http.ListenAndServe(addr, n)
 }
