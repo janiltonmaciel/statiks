@@ -20,6 +20,44 @@ COMMIT := ""
 LDFLAGS := -X main.version=$(TAG) -X main.commit=$(COMMIT) -X main.date=$(DATE)
 
 
+## Run project
+run:
+	@go run main.go
+
+## Setup of the project
+setup:
+	@go get -u github.com/alecthomas/gometalinter
+	@go get -u github.com/golang/dep/...
+	@brew install goreleaser/tap/goreleaser
+	@make vendor-install
+	gometalinter --install --update
+
+## Install dependencies of the project
+dep:
+	@dep ensure -v
+
+## Visualizing dependencies status of the project
+dep-status:
+	@dep status
+
+lint: ## Run all the linters
+	gometalinter --vendor --disable-all \
+		--enable=deadcode \
+		--enable=ineffassign \
+		--enable=gosimple \
+		--enable=staticcheck \
+		--enable=gofmt \
+		--enable=goimports \
+		--enable=dupl \
+		--enable=misspell \
+		--enable=errcheck \
+		--enable=vet \
+		--enable=vetshadow \
+		--deadline=10m \
+		--aggregate \
+		./...
+
+
 git-tag:
 	@printf "\n"; \
 	read -p "Tag ($(TAG)): "; \
@@ -49,41 +87,6 @@ release: git-tag
 	goreleaser release --rm-dist; \
 	goreleaser release -f .goreleaser-docker-brew.yml --rm-dist; \
 	echo "Release - OK"
-
-
-## Setup of the project
-setup:
-	@go get -u github.com/alecthomas/gometalinter
-	@go get -u github.com/golang/dep/...
-	@brew install goreleaser/tap/goreleaser
-	@make vendor-install
-	gometalinter --install --update
-
-## Install dependencies of the project
-vendor-install:
-	@dep ensure -v
-
-## Visualizing dependencies status of the project
-vendor-status:
-	@dep status
-
-lint: ## Run all the linters
-	gometalinter --vendor --disable-all \
-		--enable=deadcode \
-		--enable=ineffassign \
-		--enable=gosimple \
-		--enable=staticcheck \
-		--enable=gofmt \
-		--enable=goimports \
-		--enable=dupl \
-		--enable=misspell \
-		--enable=errcheck \
-		--enable=vet \
-		--enable=vetshadow \
-		--deadline=10m \
-		--aggregate \
-		./...
-
 
 
 ## Prints this help
