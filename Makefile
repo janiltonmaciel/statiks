@@ -1,28 +1,39 @@
 .SILENT:
 
+SHELL = /bin/bash
+.DEFAULT_GOAL := help
+
 COLOR_RESET = \033[0m
 COLOR_COMMAND = \033[36m
 COLOR_YELLOW = \033[33m
 COLOR_GREEN = \033[32m
 COLOR_RED = \033[31m
 
-SHELL = /bin/bash
-.DEFAULT_GOAL := help
-
-PROJECT := statiks
-
-GITHUB_TOKEN := $(shell git config --get github.token || echo $$GITHUB_TOKEN)
-
 TAG := `git describe --tags`
 DATE := `date -u +"%Y-%m-%dT%H:%M:%SZ"`
 COMMIT := ""
-
 LDFLAGS := -X main.version=$(TAG) -X main.commit=$(COMMIT) -X main.date=$(DATE)
+GITHUB_TOKEN := $(shell git config --get github.token || echo $$GITHUB_TOKEN)
 
+PROJECT := statiks
+SOURCE_FILES?=$$(go list ./... | grep -v /vendor/)
 
 ## Run project
 run:
 	@go run main.go
+
+## Runs the project unit tests
+test:
+	@go test -v -covermode atomic -cover -coverprofile coverage.txt $(SOURCE_FILES)
+	@go tool vet . 2>&1 | grep -v '^vendor\/' | grep -v '^exit\ status\ 1' || true
+
+## Run all the tests and opens the coverage report
+test-cover: test 
+	go tool cover -html=coverage.txt
+	@rm coverage.txt 2>/dev/null || true
+
+## Run all the tests and code checks
+test-ci: lint test 
 
 ## Setup of the project
 setup:
@@ -39,6 +50,16 @@ dep:
 ## Visualizing dependencies status of the project
 dep-status:
 	@dep status
+
+dep-add:
+	@printf "\n"; \
+	read -p "Repository: "; \
+	if [ ! "$$REPLY" ]; then \
+		printf "\n${COLOR_RED}"; \
+		echo "Invalid repository."; \
+		exit 1; \
+	fi; \
+	dep ensure -add $$REPLY 
 
 lint: ## Run all the linters
 	gometalinter --vendor --disable-all \
