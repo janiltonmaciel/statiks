@@ -40,7 +40,7 @@ setup:
 	@go get -u github.com/alecthomas/gometalinter
 	@go get -u github.com/golang/dep/...
 	@brew install goreleaser/tap/goreleaser
-	@make vendor-install
+	@make dep
 	gometalinter --install --update
 
 ## Install dependencies of the project
