@@ -23,8 +23,12 @@ $ brew install statiks
 $ go get github.com/janiltonmaciel/statiks
 ```
 
+## Use
+```bash
+$ statiks [options] path
+```
 
-## Options
+## options
     --host value, -t value          the host (default: "localhost")
     --port value, -p value          the port to listen to for incoming HTTP connections (default: "9080")
     --hidden, -n                    allow transfer of hidden files (default to false)
@@ -34,3 +38,20 @@ $ go get github.com/janiltonmaciel/statiks
     --compress, -c                  enable gzip compression (default to false)
     --help, -h                      show help
     --version, -v                   print the version
+
+
+## Examples
+  - start server at http://localhost:9080 serving "." (current directory)
+  ```bash
+    $ statiks
+  ```
+
+  - start server at http://localhost:9080 serving "~/Projects" with allowed methods "GET, POST"
+  ```bash
+    $ statiks -m "GET, POST" ~/Projects
+  ```
+
+  - start server at http://192.168.1.100:3000 serving "~/Data" with allowed transfer of hidden files
+  ```bash
+    $ statiks -t 192.168.1.100 -p 3000 --hidden ~/Data
+  ```
