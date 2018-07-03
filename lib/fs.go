@@ -37,10 +37,6 @@ var htmlReplacer = strings.NewReplacer(
 	"'", "&#39;",
 )
 
-func htmlEscape(s string) string {
-	return htmlReplacer.Replace(s)
-}
-
 // FileServer returns a handler that serves HTTP requests
 // with the contents of the file system rooted at root.
 //
@@ -86,7 +82,7 @@ func serveFile(w http.ResponseWriter, r *http.Request, fh *fileHandler, name str
 		http.Error(w, msg, code)
 		return
 	}
-	defer f.Close()
+	defer f.Close() // nolint: errcheck
 
 	d, err := f.Stat()
 	if err != nil {
@@ -126,10 +122,10 @@ func serveFile(w http.ResponseWriter, r *http.Request, fh *fileHandler, name str
 		index := strings.TrimSuffix(name, "/") + indexPage
 		ff, err := fs.Open(index)
 		if err == nil {
-			defer ff.Close()
+			defer ff.Close() // nolint: errcheck
 			dd, err := ff.Stat()
 			if err == nil {
-				name = index
+				name = index // nolint: ineffassign
 				d = dd
 				f = ff
 			}
@@ -235,12 +231,6 @@ var unixEpochTime = time.Unix(0, 0)
 // isZeroTime reports whether t is obviously unspecified (either zero or Unix()=0).
 func isZeroTime(t time.Time) bool {
 	return t.IsZero() || t.Equal(unixEpochTime)
-}
-
-func setLastModified(w http.ResponseWriter, modtime time.Time) {
-	if !isZeroTime(modtime) {
-		w.Header().Set("Last-Modified", modtime.UTC().Format(http.TimeFormat))
-	}
 }
 
 func writeNotModified(w http.ResponseWriter) {
