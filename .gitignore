@@ -8,3 +8,4 @@ statiks-*.tar.gz
 dist/
 gin-bin
 
+coverage.txt
