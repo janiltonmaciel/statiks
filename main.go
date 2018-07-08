@@ -45,12 +45,12 @@ func main() {
 
 		cli.BoolFlag{
 			Name:  "hidden, n",
-			Usage: "allow transfer of hidden files (default to false)",
+			Usage: "allow transfer of hidden files (default: false)",
 		},
 
 		cli.StringFlag{
 			Name:  "max-age, a",
-			Usage: "browser cache max-age in milliseconds (default: 0, no-cache)",
+			Usage: "browser cache max-age in milliseconds (default: 0)",
 		},
 
 		cli.StringFlag{
@@ -66,8 +66,25 @@ func main() {
 		},
 
 		cli.BoolFlag{
-			Name:  "compress, c",
-			Usage: "enable gzip compression (default to false)",
+			Name:  "https, s",
+			Usage: "enable https (default: false)",
+		},
+
+		cli.StringFlag{
+			Name:  "cert, c",
+			Value: "cert.pem",
+			Usage: "client certificate file (PEM format)",
+		},
+
+		cli.StringFlag{
+			Name:  "key, k",
+			Value: "key.pem",
+			Usage: "private key file (PEM format)",
+		},
+
+		cli.BoolFlag{
+			Name:  "compress, e",
+			Usage: "enable gzip compression (default: false)",
 		},
 	}
 

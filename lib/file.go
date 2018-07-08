@@ -56,3 +56,12 @@ func isHiddenWindows(path string) bool {
 
 	return false
 }
+
+func Check(certPath string, keyPath string) bool {
+	if _, err := os.Stat(certPath); os.IsNotExist(err) {
+		return false
+	} else if _, err := os.Stat(keyPath); os.IsNotExist(err) {
+		return false
+	}
+	return true
+}

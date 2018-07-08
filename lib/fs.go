@@ -12,6 +12,8 @@ import (
 	"time"
 )
 
+// The code is modified from https://golang.org/src/net/http/fs.go.
+
 // condResult is the result of an HTTP request precondition check.
 // See https://tools.ietf.org/html/rfc7232 section 3.
 type condResult int

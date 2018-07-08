@@ -15,6 +15,11 @@ type statiksConfig struct {
 	origins  []string
 	methods  []string
 	compress bool
+	https    bool
+	cert     string
+	key      string
+
+	addr string
 }
 
 func getStatiksConfig(c *cli.Context) (config statiksConfig) {
@@ -30,6 +35,11 @@ func getStatiksConfig(c *cli.Context) (config statiksConfig) {
 	config.origins = getContextCors(c.String("cors-origins"))
 	config.methods = getContextCors(c.String("cors-methods"))
 	config.compress = c.Bool("compress")
+	config.https = c.Bool("https")
+	config.cert = c.String("cert")
+	config.key = c.String("key")
+
+	config.addr = config.host + ":" + config.port
 
 	return config
 }

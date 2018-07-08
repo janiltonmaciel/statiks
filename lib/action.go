@@ -25,7 +25,7 @@ func MainAction(c *cli.Context) error {
 		return err
 	}
 
-	fmt.Println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+	fmt.Println("~~~~~~~~~~~~~~~~~ parameters ~~~~~~~~~~~~~~~~~~~~")
 	fmt.Printf("host: %s\n", config.host)
 	fmt.Printf("port: %s\n", config.port)
 	fmt.Printf("path: %s\n", config.path)
@@ -33,6 +33,9 @@ func MainAction(c *cli.Context) error {
 	fmt.Printf("max-age: %s\n", config.maxage)
 	fmt.Printf("origins: %s\n", config.origins)
 	fmt.Printf("methods: %s\n", config.methods)
+	fmt.Printf("https: %t\n", config.https)
+	fmt.Printf("cert: %s\n", config.cert)
+	fmt.Printf("key: %s\n", config.key)
 	fmt.Printf("compress: %t\n", config.compress)
 	fmt.Println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
 	fmt.Println("")
@@ -64,8 +67,15 @@ func MainAction(c *cli.Context) error {
 	n.Use(cors)
 	n.UseHandler(mux)
 
-	addr := config.host + ":" + config.port
-	fmt.Printf("[statiks] Running on http://%s\n\n", addr)
+	if config.https {
+		if !Check(config.cert, config.key) {
+			fmt.Println("[statiks] Not found cert or key pem")
+		} else {
+			fmt.Printf("[statiks] Running on https://%s\n\n", config.addr)
+			return http.ListenAndServeTLS(config.addr, config.cert, config.key, n)
+		}
+	}
 
-	return http.ListenAndServe(addr, n)
+	fmt.Printf("[statiks] Running on http://%s\n\n", config.addr)
+	return http.ListenAndServe(config.addr, n)
 }
