@@ -50,7 +50,7 @@ func main() {
 
 		cli.StringFlag{
 			Name:  "max-age, a",
-			Usage: "browser cache max-age in milliseconds (default: 0)",
+			Usage: "browser cache control max-age in milliseconds (default: 0)",
 		},
 
 		cli.StringFlag{
@@ -77,9 +77,14 @@ func main() {
 		},
 
 		cli.StringFlag{
-			Name:  "key, k",
+			Name:  "cert-key, k",
 			Value: "key.pem",
 			Usage: "private key file (PEM format)",
+		},
+
+		cli.BoolFlag{
+			Name:  "quiet, q",
+			Usage: "quiet mode, don't output each incoming request (default: false)",
 		},
 
 		cli.BoolFlag{

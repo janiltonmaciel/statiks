@@ -17,9 +17,11 @@ type statiksConfig struct {
 	compress bool
 	https    bool
 	cert     string
-	key      string
+	certKey  string
+	quiet    bool
 
-	addr string
+	addr  string
+	cache bool
 }
 
 func getStatiksConfig(c *cli.Context) (config statiksConfig) {
@@ -37,9 +39,11 @@ func getStatiksConfig(c *cli.Context) (config statiksConfig) {
 	config.compress = c.Bool("compress")
 	config.https = c.Bool("https")
 	config.cert = c.String("cert")
-	config.key = c.String("key")
+	config.certKey = c.String("cert-key")
+	config.quiet = c.Bool("quiet")
 
 	config.addr = config.host + ":" + config.port
+	config.cache = config.maxage != "0"
 
 	return config
 }
