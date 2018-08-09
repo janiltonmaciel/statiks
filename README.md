@@ -7,9 +7,9 @@
 
 #### Binaries
 
-- **darwin (macOS)** [amd64](https://github.com/janiltonmaciel/statiks/releases/download/0.2.0/statiks_0.2.0_macOS_amd64.tar.gz)
-- **linux** [386](https://github.com/janiltonmaciel/statiks/releases/download/0.2.0/statiks_0.2.0_linux_386.tar.gz) / [amd64](https://github.com/janiltonmaciel/statiks/releases/download/0.2.0/statiks_0.2.0_linux_amd64.tar.gz)
-- **windows** [386](https://github.com/janiltonmaciel/statiks/releases/download/0.2.0/statiks_0.2.0_windows_386.zip) / [amd64](https://github.com/janiltonmaciel/statiks/releases/download/0.2.0/statiks_0.2.0_windows_amd64.zip)
+- **darwin (macOS)** [amd64](https://github.com/janiltonmaciel/statiks/releases/download/0.3.0/statiks_0.3.0_macOS_amd64.tar.gz)
+- **linux** [386](https://github.com/janiltonmaciel/statiks/releases/download/0.3.0/statiks_0.3.0_linux_386.tar.gz) / [amd64](https://github.com/janiltonmaciel/statiks/releases/download/0.3.0/statiks_0.3.0_linux_amd64.tar.gz)
+- **windows** [386](https://github.com/janiltonmaciel/statiks/releases/download/0.3.0/statiks_0.3.0_windows_386.zip) / [amd64](https://github.com/janiltonmaciel/statiks/releases/download/0.3.0/statiks_0.3.0_windows_amd64.zip)
 
 #### Via Homebrew (macOS)
 ```bash
@@ -54,9 +54,9 @@ $ statiks [options] path
     $ statiks --cors-methods "GET, POST" ~/Projects
   ```
 
-  - start server at http://0.2.0.0.2.0 serving "~/Data" with allowed transfer of hidden files
+  - start server at http://0.3.0.0.3.0 serving "~/Data" with allowed transfer of hidden files
   ```bash
-    $ statiks --host 0.2.0.100 --port 3000 --hidden ~/Data
+    $ statiks --host 0.3.0.100 --port 3000 --hidden ~/Data
   ```
 
   - start server at http://localhost:9080 serving "." with https
