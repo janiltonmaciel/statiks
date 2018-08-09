@@ -36,8 +36,6 @@ $ statiks [options] path
     --cors-origins value, -o value  a list of origins a cross-domain request can be executed from (default: "*")
     --cors-methods value, -m value  a list of methods the client is allowed to use with cross-domain requests (default: "HEAD, GET, POST, PUT, PATCH, OPTIONS")
     --https, -s                     enable https (default: false)
-    --cert value, -c value          client certificate file (PEM format) (default: "cert.pem")
-    --cert-key value, -k value      private key file (PEM format) (default: "key.pem")
     --quiet, -q                     quiet mode, don't output each incoming request (default: false)
     --compress, -e                  enable gzip compression (default: false)
     --help, -h                      show help
@@ -59,7 +57,7 @@ $ statiks [options] path
     $ statiks --host 0.3.0.100 --port 3000 --hidden ~/Data
   ```
 
-  - start server at http://localhost:9080 serving "." with https
+  - start server at https://localhost:9080 serving "." with https
   ```bash
-    $ statiks --https --cert cert.pem --cert-key key.pem
+    $ statiks --https
   ```
