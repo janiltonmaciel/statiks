@@ -1,9 +1,13 @@
 package lib
 
 import (
+	"crypto/tls"
 	"fmt"
 	"net/http"
 	"path/filepath"
+	"time"
+
+	"github.com/Sirupsen/logrus"
 
 	"github.com/janiltonmaciel/middleware"
 	"github.com/phyber/negroni-gzip/gzip"
@@ -11,8 +15,20 @@ import (
 	"github.com/urfave/negroni"
 )
 
-var logLevel = "INFO"
-var projectName = "statiks"
+var (
+	logLevel    = "INFO"
+	projectName = "statiks"
+	logger      *logrus.Logger
+)
+
+func init() {
+	logger = logrus.New()
+	logger.Level = logrus.InfoLevel
+	logger.Formatter = &logrus.TextFormatter{
+		FullTimestamp:   true,
+		TimestampFormat: "2006-01-02 15:04:05.999",
+	}
+}
 
 func MainAction(c *cli.Context) error {
 
@@ -61,16 +77,40 @@ func MainAction(c *cli.Context) error {
 	printStatiksConfig(config)
 
 	if config.https {
-		if !Check(config.cert, config.certKey) {
-			fmt.Printf("[%s] Not found cert or key pem ⚠️\n", projectName)
-		} else {
-			fmt.Printf("[%s] Running on https://%s ⚡️\n\n", projectName, config.addr)
-			return http.ListenAndServeTLS(config.addr, config.cert, config.certKey, n)
-		}
+		return runHTTPS(config, n)
 	}
 
-	fmt.Printf("[%s] ️Running on http://%s ⚡️\n\n", projectName, config.addr)
+	logger.Printf("Running on http://%s ⚡️", config.addr)
 	return http.ListenAndServe(config.addr, n)
+}
+
+func runHTTPS(config statiksConfig, n *negroni.Negroni) error {
+	cert, key := GetMkCert(config.host)
+	keyPair, err := tls.X509KeyPair(cert, key)
+	if err != nil {
+		logger.Fatal("Error: Couldn't create key pair")
+	}
+
+	var certificates []tls.Certificate
+	certificates = append(certificates, keyPair)
+
+	cfg := &tls.Config{
+		MinVersion:               tls.VersionTLS12,
+		PreferServerCipherSuites: true,
+		Certificates:             certificates,
+	}
+
+	s := &http.Server{
+		Addr:           config.addr,
+		Handler:        n,
+		ReadTimeout:    10 * time.Second,
+		WriteTimeout:   10 * time.Second,
+		MaxHeaderBytes: 1 << 20,
+		TLSConfig:      cfg,
+	}
+
+	logger.Printf("Running on https://%s ⚡️", config.addr)
+	return s.ListenAndServeTLS("", "")
 }
 
 func printStatiksConfig(config statiksConfig) {
@@ -83,10 +123,6 @@ func printStatiksConfig(config statiksConfig) {
 	fmt.Printf("max-age: %s\n", config.maxage)
 	fmt.Printf("origins: %s\n", config.origins)
 	fmt.Printf("methods: %s\n", config.methods)
-	if config.https {
-		fmt.Printf("cert: %s\n", config.cert)
-		fmt.Printf("cert-key: %s\n", config.certKey)
-	}
 	fmt.Printf("quiet: %t\n", config.quiet)
 	fmt.Printf("compress: %t\n", config.compress)
 	fmt.Println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")

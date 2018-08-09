@@ -18,9 +18,13 @@ GITHUB_TOKEN := $(shell git config --get github.token || echo $$GITHUB_TOKEN)
 PROJECT := statiks
 SOURCE_FILES?=$$(go list ./... | grep -v /vendor/)
 
-## Run project
+## Run project http
 run:
 	@go run main.go
+
+## Run project https
+runs:
+	@go run main.go -s
 
 ## Runs the project unit tests
 test:

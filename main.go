@@ -70,18 +70,6 @@ func main() {
 			Usage: "enable https (default: false)",
 		},
 
-		cli.StringFlag{
-			Name:  "cert, c",
-			Value: "cert.pem",
-			Usage: "client certificate file (PEM format)",
-		},
-
-		cli.StringFlag{
-			Name:  "cert-key, k",
-			Value: "key.pem",
-			Usage: "private key file (PEM format)",
-		},
-
 		cli.BoolFlag{
 			Name:  "quiet, q",
 			Usage: "quiet mode, don't output each incoming request (default: false)",
