@@ -52,9 +52,9 @@ $ statiks [options] <path>
     $ statiks --cors-methods "GET, POST" /home
   ```
 
-  - start server at http://0.4.0.4 serving "/tmp" with disable gzip compression
+  - start server at http://192.168.1.100 serving "/tmp" with disable gzip compression
   ```bash
-    $ statiks --host 0.4.100 --no-gzip /tmp
+    $ statiks --host 192.168.1.100 --no-gzip /tmp
   ```
 
   - start server at https://localhost:9080 serving "." with HTTPS
