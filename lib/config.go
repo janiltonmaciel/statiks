@@ -2,6 +2,7 @@ package lib
 
 import (
 	"strings"
+	"time"
 
 	"github.com/urfave/cli"
 )
@@ -16,8 +17,7 @@ type statiksConfig struct {
 	methods  []string
 	compress bool
 	https    bool
-	cert     string
-	certKey  string
+	delay    time.Duration
 	quiet    bool
 
 	addr  string
@@ -25,25 +25,21 @@ type statiksConfig struct {
 }
 
 func getStatiksConfig(c *cli.Context) (config statiksConfig) {
-	if c.Args().Get(0) == "" {
-		config.path = "."
-	} else {
-		config.path = c.Args().Get(0)
-	}
+	config.path = getPath(c)
 	config.host = getContextHost(c.String("host"))
 	config.port = c.String("port")
+	config.https = c.Bool("https")
+	config.delay = getDelay(c)
+
 	config.hidden = c.Bool("hidden")
 	config.maxage = getContextMaxAge(c.String("max-age"))
 	config.origins = getContextCors(c.String("cors-origins"))
 	config.methods = getContextCors(c.String("cors-methods"))
-	config.compress = c.Bool("compress")
-	config.https = c.Bool("https")
-	config.cert = c.String("cert")
-	config.certKey = c.String("cert-key")
+	config.compress = !c.Bool("no-gzip")
 	config.quiet = c.Bool("quiet")
+	config.cache = config.maxage != "0"
 
 	config.addr = config.host + ":" + config.port
-	config.cache = config.maxage != "0"
 
 	return config
 }
@@ -67,4 +63,17 @@ func getContextMaxAge(value string) string {
 		maxge = value
 	}
 	return maxge
+}
+
+func getPath(c *cli.Context) (path string) {
+	path = c.Args().Get(0)
+	if path == "" {
+		path = "."
+	}
+	return path
+}
+
+func getDelay(c *cli.Context) time.Duration {
+	delay := c.Int64("delay")
+	return time.Duration(delay) * time.Millisecond
 }
