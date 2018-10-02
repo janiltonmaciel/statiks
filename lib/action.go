@@ -57,6 +57,11 @@ func MainAction(c *cli.Context) error {
 		handler = NoCacheHandler(fs)
 	}
 
+	// add delay
+	if config.delay > 0 {
+		handler = DelayHandler(handler, config.delay)
+	}
+
 	mux := http.NewServeMux()
 	mux.Handle("/", handler)
 
@@ -64,6 +69,7 @@ func MainAction(c *cli.Context) error {
 	n.Use(negroni.NewRecovery())
 
 	if !config.quiet {
+		// add middleware logger
 		n.Use(middlewareLogger)
 	}
 
@@ -119,6 +125,7 @@ func printStatiksConfig(config statiksConfig) {
 	fmt.Printf("host: %s\n", config.host)
 	fmt.Printf("port: %s\n", config.port)
 	fmt.Printf("path: %s\n", config.path)
+	fmt.Printf("delay: %s\n", config.delay.String())
 	fmt.Printf("hidden: %t\n", config.hidden)
 	fmt.Printf("max-age: %s\n", config.maxage)
 	fmt.Printf("origins: %s\n", config.origins)
