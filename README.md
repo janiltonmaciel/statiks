@@ -7,9 +7,9 @@
 
 #### Binaries
 
-- **darwin (macOS)** [amd64](https://github.com/janiltonmaciel/statiks/releases/download/0.3.0/statiks_0.3.0_macOS_amd64.tar.gz)
-- **linux** [386](https://github.com/janiltonmaciel/statiks/releases/download/0.3.0/statiks_0.3.0_linux_386.tar.gz) / [amd64](https://github.com/janiltonmaciel/statiks/releases/download/0.3.0/statiks_0.3.0_linux_amd64.tar.gz)
-- **windows** [386](https://github.com/janiltonmaciel/statiks/releases/download/0.3.0/statiks_0.3.0_windows_386.zip) / [amd64](https://github.com/janiltonmaciel/statiks/releases/download/0.3.0/statiks_0.3.0_windows_amd64.zip)
+- **darwin (macOS)** [amd64](https://github.com/janiltonmaciel/statiks/releases/download/0.4/statiks_0.4_macOS_amd64.tar.gz)
+- **linux** [386](https://github.com/janiltonmaciel/statiks/releases/download/0.4/statiks_0.4_linux_386.tar.gz) / [amd64](https://github.com/janiltonmaciel/statiks/releases/download/0.4/statiks_0.4_linux_amd64.tar.gz)
+- **windows** [386](https://github.com/janiltonmaciel/statiks/releases/download/0.4/statiks_0.4_windows_386.zip) / [amd64](https://github.com/janiltonmaciel/statiks/releases/download/0.4/statiks_0.4_windows_amd64.zip)
 
 #### Via Homebrew (macOS)
 ```bash
@@ -52,9 +52,9 @@ $ statiks [options] <path>
     $ statiks --cors-methods "GET, POST" /home
   ```
 
-  - start server at http://192.168.1.100:9080 serving "/tmp" with disable gzip compression
+  - start server at http://0.4.0.4 serving "/tmp" with disable gzip compression
   ```bash
-    $ statiks --host 192.168.1.100 --no-gzip /tmp
+    $ statiks --host 0.4.100 --no-gzip /tmp
   ```
 
   - start server at https://localhost:9080 serving "." with HTTPS
