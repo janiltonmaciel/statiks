@@ -4,18 +4,7 @@ import (
 	"fmt"
 	"net/http"
 	"time"
-
-	"github.com/rs/cors"
 )
-
-func getCors(config statiksConfig) *cors.Cors {
-	return cors.New(cors.Options{
-		AllowedOrigins:   config.origins,
-		AllowedMethods:   config.methods,
-		AllowedHeaders:   []string{"*"},
-		AllowCredentials: true,
-	})
-}
 
 var noCacheHeaders = map[string]string{
 	"Cache-Control":   "no-cache, private, max-age=0",
