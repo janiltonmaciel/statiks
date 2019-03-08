@@ -69,6 +69,7 @@ func serveFile(w http.ResponseWriter, r *http.Request, fh *fileHandler, name str
 
 	fs := fh.root
 	config := fh.config
+	defer func() { fh.config.firstRequest = false }()
 
 	// redirect .../index.html to .../
 	// can't use Redirect() because that would make the path absolute,
@@ -136,7 +137,7 @@ func serveFile(w http.ResponseWriter, r *http.Request, fh *fileHandler, name str
 
 	// Still a directory? (we didn't find an index.html file)
 	if d.IsDir() {
-		if checkIfModifiedSince(r, d.ModTime()) == condFalse {
+		if checkIfModifiedSince(r, d.ModTime(), config) == condFalse {
 			writeNotModified(w)
 			return
 		}
@@ -145,9 +146,6 @@ func serveFile(w http.ResponseWriter, r *http.Request, fh *fileHandler, name str
 		return
 	}
 
-	// serveContent will check modification time
-	// sizeFunc := func() (int64, error) { return d.Size(), nil }
-	// serveContent(w, r, d.Name(), d.ModTime(), sizeFunc, f)
 	http.ServeContent(w, r, d.Name(), d.ModTime(), f)
 }
 
@@ -208,7 +206,7 @@ func localRedirect(w http.ResponseWriter, r *http.Request, newPath string) {
 	w.WriteHeader(http.StatusMovedPermanently)
 }
 
-func checkIfModifiedSince(r *http.Request, modtime time.Time) condResult {
+func checkIfModifiedSince(r *http.Request, modtime time.Time, config statiksConfig) condResult {
 	if r.Method != "GET" && r.Method != "HEAD" {
 		return condNone
 	}
@@ -220,6 +218,11 @@ func checkIfModifiedSince(r *http.Request, modtime time.Time) condResult {
 	if err != nil {
 		return condNone
 	}
+
+	if config.firstRequest {
+		return condNone
+	}
+
 	// The Date-Modified header truncates sub-second precision, so
 	// use mtime < t+1s instead of mtime <= t to check for unmodified.
 	if modtime.Before(t.Add(1 * time.Second)) {
