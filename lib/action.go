@@ -11,6 +11,7 @@ import (
 
 	"github.com/janiltonmaciel/middleware"
 	"github.com/phyber/negroni-gzip/gzip"
+	"github.com/rs/cors"
 	"github.com/urfave/cli"
 	"github.com/urfave/negroni"
 )
@@ -33,7 +34,6 @@ func init() {
 func MainAction(c *cli.Context) error {
 
 	config := getStatiksConfig(c)
-	cors := getCors(config)
 	middlewareLogger := middleware.NewLogger(
 		logLevel,
 		projectName,
@@ -68,30 +68,42 @@ func MainAction(c *cli.Context) error {
 	n := negroni.New()
 	n.Use(negroni.NewRecovery())
 
+	// add middleware logger
 	if !config.quiet {
-		// add middleware logger
 		n.Use(middlewareLogger)
 	}
 
-	if config.compress {
+	// add middleware gzip
+	if config.gzip {
 		n.Use(gzip.Gzip(gzip.BestSpeed))
 	}
 
-	n.Use(cors)
+	// enable cors
+	if config.cors {
+		n.Use(cors.AllowAll())
+	}
+
 	n.UseHandler(mux)
 
-	printStatiksConfig(config)
+	// printStatiksConfig(config)
 
-	if config.https {
+	if config.ssl {
 		return runHTTPS(config, n)
 	}
 
-	logger.Printf("Running on http://%s ⚡️", config.addr)
-	return http.ListenAndServe(config.addr, n)
+	return runHTTP(config, n)
+}
+
+func runHTTP(config statiksConfig, n *negroni.Negroni) error {
+	addr := fmt.Sprintf("%s:%s", config.address, config.port)
+	fmt.Printf("Running on \n ⚡️ http://%s, serving '%s'\n\n", addr, config.path)
+	fmt.Print("CTRL-C to stop the️ server\n")
+	return http.ListenAndServe(addr, n)
 }
 
 func runHTTPS(config statiksConfig, n *negroni.Negroni) error {
-	cert, key := GetMkCert(config.host)
+	addr := fmt.Sprintf("%s:%s", config.address, config.port)
+	cert, key := GetMkCert(addr)
 	keyPair, err := tls.X509KeyPair(cert, key)
 	if err != nil {
 		logger.Fatal("Error: Couldn't create key pair")
@@ -107,7 +119,7 @@ func runHTTPS(config statiksConfig, n *negroni.Negroni) error {
 	}
 
 	s := &http.Server{
-		Addr:           config.addr,
+		Addr:           addr,
 		Handler:        n,
 		ReadTimeout:    10 * time.Second,
 		WriteTimeout:   10 * time.Second,
@@ -115,23 +127,22 @@ func runHTTPS(config statiksConfig, n *negroni.Negroni) error {
 		TLSConfig:      cfg,
 	}
 
-	logger.Printf("Running on https://%s ⚡️", config.addr)
+	fmt.Printf("Running on \n ⚡️ https://%s, serving '%s'\n\n", addr, config.path)
+	fmt.Print("CTRL-C to stop the️ server\n")
 	return s.ListenAndServeTLS("", "")
 }
 
 func printStatiksConfig(config statiksConfig) {
-	fmt.Println("~~~~~~~~~~~~~~~~~ parameters ~~~~~~~~~~~~~~~~~~~~")
-	fmt.Printf("https: %t\n", config.https)
-	fmt.Printf("host: %s\n", config.host)
-	fmt.Printf("port: %s\n", config.port)
 	fmt.Printf("path: %s\n", config.path)
-	fmt.Printf("delay: %s\n", config.delay.String())
-	fmt.Printf("hidden: %t\n", config.hidden)
-	fmt.Printf("max-age: %s\n", config.maxage)
-	fmt.Printf("origins: %s\n", config.origins)
-	fmt.Printf("methods: %s\n", config.methods)
-	fmt.Printf("quiet: %t\n", config.quiet)
-	fmt.Printf("compress: %t\n", config.compress)
+	fmt.Printf("-a, --address: %s\n", config.address)
+	fmt.Printf("-p, --port: %s\n", config.port)
+	fmt.Printf("-d, --delay: %s\n", config.delay.String())
+	fmt.Printf("-s, --ssl: %t\n", config.ssl)
+	fmt.Printf("-c, --cache: %s\n", config.maxage)
+	fmt.Printf("-q, --quiet: %t\n", config.quiet)
+	fmt.Printf("-g, --gzip: %t\n", config.gzip)
+	fmt.Printf("--cors: %t\n", config.cors)
+	fmt.Printf("--hidden: %t\n", config.hidden)
 	fmt.Println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
 	fmt.Println("")
 }

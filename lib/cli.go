@@ -41,17 +41,17 @@ OPTIONS:
 {{- end }}
 
 EXAMPLES:
-	- start server at http://localhost:9000 serving "." with allowed transfer of hidden files
-			statiks -port 9000 --hidden
+	- start server at http://0.0.0.0:9000 serving "."
+			statiks -port 9000
 
-	- start server at http://localhost:9080 serving "/home" with allowed methods "GET, POST"
-			statiks --cors-methods "GET, POST" /home
+	- start server at http://0.0.0.0:9080 serving "/home" with CORS
+			statiks --cors /home
 
-	- start server at http://192.168.1.100:9080 serving "/tmp" with disable gzip compression
-			statiks --host 192.168.1.100 --no-gzip /tmp
+	- start server at http://192.168.1.100:9080 serving "/tmp" with gzip compression
+			statiks --host 192.168.1.100 --gzip /tmp
 
-	- start server at https://localhost:9080 serving "." with HTTPS
-			statiks --https
+	- start server at https://0.0.0.0:9080 serving "." with HTTPS
+			statiks --ssl
 
 {{- if .Version }}
 
