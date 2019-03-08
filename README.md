@@ -27,18 +27,18 @@ $ go get github.com/janiltonmaciel/statiks
 ```bash
 $ statiks [options] <path>
 
-  --host value, -H value            set host (default: "localhost")
-  --port value, -p value            set port (default: "9080")
-  --https                           enable https (default: false)
-  --hidden                          allow transfer of hidden files (default: false)
-  --delay value, -d value           add delay to responses (ms) (default: 0)
-  --max-age value, --ma value       browser cache control max-age in milliseconds (default: 0)
-  --cors-origins value, --co value  a list of origins a cross-domain request can be executed from (default: "*")
-  --cors-methods value, --cm value  a list of methods the client is allowed to use with cross-domain requests (default: "HEAD, GET, POST, PUT, PATCH, OPTIONS")
-  --no-gzip, --ng                   disable GZIP Content-Encoding (default: false)
-  --quiet, -q                       quiet mode, don't output each incoming request (default: false)
-  --help, -h                        show help
-  --version, -v                     print the version
+  -a or --address           set address (default: "0.0.0.0")
+  -p or --port              set port (default: "9080")
+  -S or --ssl               enable https (default: false)
+  -H or --hidden            allow transfer of hidden files (default: false)
+  -d or --delay             add delay to responses (milliseconds) (default: 0)
+  -c                        set cache time (in seconds) for cache-control max-age header (default: 0)
+  --co or --cors-origins    a list of origins a cross-domain request can be executed from (default: "*")
+  --cm or --cors-methods    a list of methods the client is allowed to use with cross-domain requests (default: "HEAD, GET, POST, PUT, PATCH, OPTIONS")
+  --ng or --no-gzip                    disable GZIP Content-Encoding (default: false)
+  -q or --quiet                       quiet mode, don't output each incoming request (default: false)
+  -h or --help                        show help
+  -v or --version                     print the version
 ```
 
 ## Examples
