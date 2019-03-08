@@ -27,37 +27,36 @@ $ go get github.com/janiltonmaciel/statiks
 ```bash
 $ statiks [options] <path>
 
-  -a or --address           set address (default: "0.0.0.0")
-  -p or --port              set port (default: "9080")
-  -S or --ssl               enable https (default: false)
-  -H or --hidden            allow transfer of hidden files (default: false)
-  -d or --delay             add delay to responses (milliseconds) (default: 0)
-  -c                        set cache time (in seconds) for cache-control max-age header (default: 0)
-  --co or --cors-origins    a list of origins a cross-domain request can be executed from (default: "*")
-  --cm or --cors-methods    a list of methods the client is allowed to use with cross-domain requests (default: "HEAD, GET, POST, PUT, PATCH, OPTIONS")
-  --ng or --no-gzip                    disable GZIP Content-Encoding (default: false)
-  -q or --quiet                       quiet mode, don't output each incoming request (default: false)
-  -h or --help                        show help
-  -v or --version                     print the version
+  -a value, --address value  set address (default: "0.0.0.0")
+  -p value, --port value     set port (default: "9080")
+  -d value, --delay value    add delay to responses (in milliseconds) (default: 0)
+  -c value, --cache value    set cache time (in seconds) for cache-control max-age header (default: 0)
+  -g, --gzip                 enable GZIP Content-Encoding
+  -s, --ssl                  enable https
+  -q, --quiet                enable quiet mode, don't output each incoming request
+  --hidden                   enable exclude directory entries whose names begin with a dot (.)
+  --cors                     enable CORS allowing all origins with all standard methods with any header and credentials.
+  -h, --help                 show help
+  -v, --version              print the version
 ```
 
 ## Examples
-  start server at http://localhost:9000 serving "." with allowed transfer of hidden files
+  start server at http://0.0.0.0:9000 serving "."
   ```bash
-    $ statiks -port 9000 --hidden
+    $ statiks -port 9000
   ```
 
-  - start server at http://localhost:9080 serving "/home" with allowed methods "GET, POST"
+  - start server at http://0.0.0.0:9080 serving "/home" with CORS
   ```bash
-    $ statiks --cors-methods "GET, POST" /home
+    $ statiks --cors /home
   ```
 
-  - start server at http://192.168.1.100 serving "/tmp" with disable gzip compression
+  - start server at http://192.168.1.100:9080 serving "/tmp" with gzip compression
   ```bash
-    $ statiks --host 192.168.1.100 --no-gzip /tmp
+    $ statiks --host 192.168.1.100 --gzip /tmp
   ```
 
-  - start server at https://localhost:9080 serving "." with HTTPS
+  - start server at https://0.0.0.0:9080 serving "." with HTTPS
   ```bash
-    $ statiks --https
+    $ statiks --ssl
   ```
