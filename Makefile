@@ -101,6 +101,21 @@ build:
 	echo "Building $(PROJECT)"
 	go build -ldflags "$(LDFLAGS)" -o $(PROJECT) main.go
 
+## Build static & optimized
+build_optimized:
+	echo "Building $(PROJECT) -- Optimized"
+	go build -a -installsuffix cgo -ldflags "-w -s" -o $(PROJECT) main.go
+
+## Build Docker Image (uses docker multi-stage builds)
+docker:
+	echo "Building Docker Image of $(PROJECT)"
+	docker build --target release -t $(PROJECT) .
+
+## Run minimal demo from Docker Image (uses docker multi-stage builds)
+docker_demo:
+	docker build --target demo -t $(PROJECT):demo .
+	docker run --rm -it -p 9080:9080 $(PROJECT):demo
+
 ## Release of the project
 release: git-tag
 	@if [ ! "$(GITHUB_TOKEN)" ]; then \
