@@ -6,10 +6,10 @@ import (
 	"github.com/urfave/cli"
 )
 
-// https://github.com/urfave/cli/blob/master/help.go
 // AppHelpTemplate is the text template for the Default help topic.
 // cli.go uses text/template to render templates. You can
 // render custom help text by setting this variable.
+// https://github.com/urfave/cli/blob/master/help.go
 var AppHelpTemplate = `NAME:
    {{.Name}}{{if .Usage}} - {{.Usage}}{{end}}
 
@@ -17,13 +17,13 @@ USAGE:
 {{- if .UsageText }}
 	 {{.UsageText}}
 {{- else }}
-	{{.HelpName}} 
+	{{.HelpName}}
 	{{if .VisibleFlags}}
 		[global options]
 	{{end}}
-	{{if .Commands}} 
+	{{if .Commands}}
 		command [command options]
-	{{end}} 
+	{{end}}
 	{{if .ArgsUsage}}
 		{{.ArgsUsage}}
 	{{else}}

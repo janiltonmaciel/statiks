@@ -32,56 +32,22 @@ test:
 	@go tool vet . 2>&1 | grep -v '^vendor\/' | grep -v '^exit\ status\ 1' || true
 
 ## Run all the tests and opens the coverage report
-test-cover: test 
+test-cover: test
 	go tool cover -html=coverage.txt
 	@rm coverage.txt 2>/dev/null || true
 
 ## Run all the tests and code checks
-test-ci: lint test 
+test-ci: lint test
 
 ## Setup of the project
 setup:
-	@go get -u github.com/alecthomas/gometalinter
-	@go get -u github.com/golang/dep/...
+	@go mod verify
 	@brew install goreleaser/tap/goreleaser
-	@make dep
-	gometalinter --install --update
 
-## Install dependencies of the project
-dep:
-	@dep ensure -v
-
-## Visualizing dependencies status of the project
-dep-status:
-	@dep status
-
-dep-add:
-	@printf "\n"; \
-	read -p "Repository: "; \
-	if [ ! "$$REPLY" ]; then \
-		printf "\n${COLOR_RED}"; \
-		echo "Invalid repository."; \
-		exit 1; \
-	fi; \
-	dep ensure -add $$REPLY 
-
-lint: ## Run all the linters
-	gometalinter --vendor --disable-all \
-		--enable=deadcode \
-		--enable=ineffassign \
-		--enable=gosimple \
-		--enable=staticcheck \
-		--enable=gofmt \
-		--enable=goimports \
-		--enable=dupl \
-		--enable=misspell \
-		--enable=errcheck \
-		--enable=vet \
-		--enable=vetshadow \
-		--deadline=10m \
-		--aggregate \
-		./...
-
+lint:
+	@echo "*** Start lint ***"
+	@script -q /dev/null golangci-lint run --enable-all -D gochecknoglobals,lll,wsl,maligned,nlreturn --print-issued-lines=false --out-format=colored-line-number | awk '{print $0; count++} END {print "\nCount: " count}'
+	@echo "*** Finish ***"
 
 git-tag:
 	@printf "\n"; \
@@ -92,7 +58,7 @@ git-tag:
 		exit 1; \
 	fi; \
 	TAG=$$REPLY; \
-	sed -i.bak -r "s/[0-9]+.[0-9]+.[0-9]+/$$TAG/g" README.md && rm README.md.bak 2>/dev/null; \
+	sed -i.bak "s/[0-9]+.[0-9]+.[0-9]+/$$TAG/g" README.md && rm README.md.bak 2>/dev/null; \
 	git commit README.md -m "Update README.md with release $$TAG"; \
 	git tag -s $$TAG -m "$$TAG"
 

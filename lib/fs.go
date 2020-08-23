@@ -64,6 +64,7 @@ func (f *fileHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 }
 
 // name is '/'-separated, not filepath.Separator.
+// nolint
 func serveFile(w http.ResponseWriter, r *http.Request, fh *fileHandler, name string, redirect bool) {
 	const indexPage = "/index.html"
 
@@ -85,7 +86,7 @@ func serveFile(w http.ResponseWriter, r *http.Request, fh *fileHandler, name str
 		http.Error(w, msg, code)
 		return
 	}
-	defer f.Close() // nolint: errcheck
+	defer f.Close()
 
 	d, err := f.Stat()
 	if err != nil {
@@ -125,10 +126,10 @@ func serveFile(w http.ResponseWriter, r *http.Request, fh *fileHandler, name str
 		index := strings.TrimSuffix(name, "/") + indexPage
 		ff, err := fs.Open(index)
 		if err == nil {
-			defer ff.Close() // nolint: errcheck
+			defer ff.Close()
 			dd, err := ff.Stat()
 			if err == nil {
-				name = index // nolint: ineffassign
+				// name = index
 				d = dd
 				f = ff
 			}

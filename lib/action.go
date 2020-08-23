@@ -7,37 +7,21 @@ import (
 	"path/filepath"
 	"time"
 
-	"github.com/Sirupsen/logrus"
-
-	"github.com/janiltonmaciel/middleware"
 	"github.com/phyber/negroni-gzip/gzip"
 	"github.com/rs/cors"
 	"github.com/urfave/cli"
 	"github.com/urfave/negroni"
 )
 
-var (
-	logLevel    = "INFO"
-	projectName = "statiks"
-	logger      *logrus.Logger
+var projectName = "statiks"
+
+const (
+	readTimeout  = 10 * time.Second
+	writeTimeout = 10 * time.Second
 )
 
-func init() {
-	logger = logrus.New()
-	logger.Level = logrus.InfoLevel
-	logger.Formatter = &logrus.TextFormatter{
-		FullTimestamp:   true,
-		TimestampFormat: "2006-01-02 15:04:05.999",
-	}
-}
-
 func MainAction(c *cli.Context) error {
-
 	config := getStatiksConfig(c)
-	middlewareLogger := middleware.NewLogger(
-		logLevel,
-		projectName,
-	)
 
 	docroot, err := filepath.Abs(config.path)
 	if err != nil {
@@ -70,7 +54,7 @@ func MainAction(c *cli.Context) error {
 
 	// add middleware logger
 	if !config.quiet {
-		n.Use(middlewareLogger)
+		n.Use(NewLogger(projectName))
 	}
 
 	// add middleware gzip
@@ -94,14 +78,14 @@ func MainAction(c *cli.Context) error {
 	return runHTTP(config, n)
 }
 
-func runHTTP(config statiksConfig, n *negroni.Negroni) error {
+func runHTTP(config statiksConfig, handler http.Handler) error {
 	addr := fmt.Sprintf("%s:%s", config.address, config.port)
 	fmt.Printf("Running on \n ⚡️ http://%s, serving '%s'\n\n", addr, config.path)
 	fmt.Print("CTRL-C to stop the️ server\n")
-	return http.ListenAndServe(addr, n)
+	return http.ListenAndServe(addr, handler)
 }
 
-func runHTTPS(config statiksConfig, n *negroni.Negroni) error {
+func runHTTPS(config statiksConfig, handler http.Handler) error {
 	addr := fmt.Sprintf("%s:%s", config.address, config.port)
 	cert, key := GetMkCert(addr)
 	keyPair, err := tls.X509KeyPair(cert, key)
@@ -119,12 +103,11 @@ func runHTTPS(config statiksConfig, n *negroni.Negroni) error {
 	}
 
 	s := &http.Server{
-		Addr:           addr,
-		Handler:        n,
-		ReadTimeout:    10 * time.Second,
-		WriteTimeout:   10 * time.Second,
-		MaxHeaderBytes: 1 << 20,
-		TLSConfig:      cfg,
+		Addr:         addr,
+		Handler:      handler,
+		ReadTimeout:  readTimeout,
+		WriteTimeout: writeTimeout,
+		TLSConfig:    cfg,
 	}
 
 	fmt.Printf("Running on \n ⚡️ https://%s, serving '%s'\n\n", addr, config.path)
@@ -132,6 +115,7 @@ func runHTTPS(config statiksConfig, n *negroni.Negroni) error {
 	return s.ListenAndServeTLS("", "")
 }
 
+// nolint
 func printStatiksConfig(config statiksConfig) {
 	fmt.Printf("path: %s\n", config.path)
 	fmt.Printf("-a, --address: %s\n", config.address)

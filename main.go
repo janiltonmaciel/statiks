@@ -15,13 +15,14 @@ var (
 	author  = "Janilton Maciel <janilton@gmail.com>"
 )
 
+// nolint
 func init() {
 	cli.AppHelpTemplate = lib.AppHelpTemplate
 	cli.VersionPrinter = lib.VersionPrinter(commit, date)
 }
 
+// nolint
 func main() {
-
 	app := cli.NewApp()
 	app.Name = "statiks"
 	app.Usage = "a simple http server"
@@ -93,5 +94,4 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
-
 }

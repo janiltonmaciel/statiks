@@ -13,7 +13,6 @@ type neuteredFileSystem struct {
 }
 
 func (nfs neuteredFileSystem) Open(path string) (http.File, error) {
-
 	// not allowed hidden file
 	if !nfs.hidden {
 		base := filepath.Base(path)

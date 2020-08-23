@@ -19,11 +19,14 @@ import (
 	"time"
 )
 
-const rootName = "rootCA.pem"
-const keyName = "rootCA-key.pem"
+const (
+	rootName = "rootCA.pem"
+	keyName  = "rootCA-key.pem"
+)
 
 var userAndHostname string
 
+// nolint
 func init() {
 	u, _ := user.Current()
 	if u != nil {
@@ -51,7 +54,7 @@ func GetMkCert(host string) (certArray []byte, keyArray []byte) {
 			OrganizationalUnit: []string{userAndHostname},
 		},
 
-		NotAfter:  time.Now().AddDate(10, 0, 0),
+		NotAfter:  time.Now().AddDate(10, 0, 0), // nolint
 		NotBefore: time.Now(),
 
 		KeyUsage:              x509.KeyUsageKeyEncipherment | x509.KeyUsageDigitalSignature,
@@ -140,7 +143,7 @@ func loadCA(carootPath string) (caCert *x509.Certificate, caKey crypto.PrivateKe
 	caKey, err = x509.ParsePKCS8PrivateKey(keyDERBlock.Bytes)
 	fatalIfErr(err, "failed to parse the CA key")
 
-	return
+	return caCert, caKey
 }
 
 func fatalIfErr(err error, msg string) {
@@ -148,9 +151,3 @@ func fatalIfErr(err error, msg string) {
 		logger.Fatalf("ERROR: %s: %s", msg, err)
 	}
 }
-
-// func fatalIfCmdErr(err error, cmd string, out []byte) {
-// 	if err != nil {
-// 		logger.Fatalf("ERROR: failed to execute \"%s\": %s\n\n%s\n", cmd, err, out)
-// 	}
-// }

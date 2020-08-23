@@ -1,18 +1,26 @@
-package lib
+package lib_test
 
 import (
 	"net/http"
 	"net/http/httptest"
 	"testing"
 
+	"github.com/janiltonmaciel/statiks/lib"
 	"github.com/stretchr/testify/assert"
 )
+
+var noCacheHeaders = map[string]string{
+	"Cache-Control":   "no-cache, private, max-age=0",
+	"Pragma":          "no-cache",
+	"X-Accel-Expires": "0",
+	"Expires":         "0",
+}
 
 func TestNoCacheHandler(t *testing.T) {
 	testHandler := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {})
 	w := httptest.NewRecorder()
 
-	handler := NoCacheHandler(testHandler)
+	handler := lib.NoCacheHandler(testHandler)
 	handler.ServeHTTP(w, nil)
 
 	for k, v := range noCacheHeaders {
@@ -45,9 +53,9 @@ func TestCacheHandler(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			w := httptest.NewRecorder()
-			handler := CacheHandler(tt.args.h, tt.args.maxAge)
+			handler := lib.CacheHandler(tt.args.h, tt.args.maxAge) // nolint
 			handler.ServeHTTP(w, nil)
-			assert.Equal(t, w.Header().Get("Cache-Control"), tt.want)
+			assert.Equal(t, w.Header().Get("Cache-Control"), tt.want) // nolint
 		})
 	}
 }
