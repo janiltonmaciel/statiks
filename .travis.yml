@@ -7,21 +7,17 @@ git:
   submodules: false
 
 go:
-  - "1.10"
+  - "1.14"
 
 env:
-  - GOARCH=amd64  
+  - GOARCH=amd64
 
 before_install:
   - go get github.com/axw/gocov/gocov
   - if ! go get github.com/golang/tools/cmd/cover; then go get golang.org/x/tools/cmd/cover; fi
-  - curl https://raw.githubusercontent.com/golang/dep/master/install.sh | sh
-
-install:
-  - dep ensure
 
 script:
   - make test
- 
+
 after_success:
-- bash <(curl -s https://codecov.io/bash)  
+- bash <(curl -s https://codecov.io/bash)
