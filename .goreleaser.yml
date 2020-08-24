@@ -1,48 +1,68 @@
 # goreleaser.yml
 # Build customization
 project_name: statiks
-build:
-  main: ./main.go
-  binary: statiks
-  goos:
-    - windows
-    - darwin
-    - linux
-  goarch:
-    - amd64
-    - 386
-  ignore:
-    - goos: darwin
-      goarch: 386
 
-# Archive customization
-archive:
-  name_template: "{{.ProjectName}}_{{.Version}}_{{.Os}}_{{.Arch}}"
-  format: tar.gz
-  replacements:
-    darwin: macOS
-  format_overrides:
-    - goos: windows
-      format: zip
+builds:
+  -
+    main: ./main.go
+    binary: statiks
+    env:
+      - CGO_ENABLED=0
+    goos:
+      - windows
+      - darwin
+      - linux
+    ignore:
+      - goarch: 386
+
+release:
+  github:
+    owner: janiltonmaciel
+    name: statiks
 
 
 # Mac OS Homebrew
-brew:
-  # Reporitory to push the tap to.
-  github:
-    owner: janiltonmaciel
-    name: homebrew-tap
+brews:
+  -
+    # Reporitory to push the tap to.
+    tap:
+      owner: janiltonmaciel
+      name: homebrew-tap
 
-  description: "Generator Dockerfile"
-  homepage: "https://github.com/janiltonmaciel/statiks"
+    description: "Fast, zero-configuration, static HTTP filer server."
+    homepage: "https://github.com/janiltonmaciel/statiks"
 
-  # Folder inside the repository to put the formula.
-  # Default is the root folder.
-  folder: Formula
+    # Folder inside the repository to put the formula.
+    # Default is the root folder.
+    folder: Formula
 
-  # Custom install
-  install: |
-    bin.install "statiks"
+    # Custom install
+    install: |
+      bin.install "statiks"
 
-  test: |
-    assert_match version.to_s, shell_output("#{bin}/statiks --version")      
+    test: |
+      assert_match version.to_s, shell_output("#{bin}/statiks --version")
+
+dockers:
+  -
+    # Templates of the Docker image names.
+    image_templates:
+    - "janilton/statiks:latest"
+    - "janilton/statiks:{{ .Major }}.{{ .Minor }}"
+
+    # If your Dockerfile copies files other than the binary itself,
+    # you should list them here as well.
+    # Note that goreleaser will create the same structure inside the temporary
+    # folder, so if you add `foo/bar.json` here, on your Dockerfile you can
+    # `COPY foo/bar.json /whatever.json`.
+    # Also note that the paths here are relative to the folder in which
+    # goreleaser is being run.
+    # This field does not support wildcards, you can add an entire folder here
+    # and use wildcards when you `COPY`/`ADD` in your Dockerfile.
+    extra_files:
+      - go.mod
+      - go.sum
+      - README.md
+      - Makefile
+      - main.go
+      - lib
