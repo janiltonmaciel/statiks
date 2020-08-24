@@ -1,31 +1,46 @@
 # Statiks
+Fast, zero-configuration, static HTTP filer server.
+Like Python's `SimpleHTTPServer` but scalable.
+
 [![Build Status](https://travis-ci.org/janiltonmaciel/statiks.svg?branch=master)](https://travis-ci.org/janiltonmaciel/statiks)
 [![Go Report Card](https://goreportcard.com/badge/github.com/janiltonmaciel/statiks)](https://goreportcard.com/report/github.com/janiltonmaciel/statiks)
 [![GitHub Releases](https://img.shields.io/github/release/janiltonmaciel/statiks.svg)](https://github.com/janiltonmaciel/statiks/releases)
 
-## Installation
+## Features
+
+* HTTP and HTTPS (TLS)
+* CORS support
+* Support directory list
+* Content compression (auto, gzip, deflate, br)
+* Request logging
+* Cache control and "Last-Modified"
+
+### Installation
 
 #### Binaries
 
-- **darwin (macOS)** [amd64](https://github.com/janiltonmaciel/statiks/releases/download/0.4/statiks_0.4_macOS_amd64.tar.gz)
-- **linux** [386](https://github.com/janiltonmaciel/statiks/releases/download/0.4/statiks_0.4_linux_386.tar.gz) / [amd64](https://github.com/janiltonmaciel/statiks/releases/download/0.4/statiks_0.4_linux_amd64.tar.gz)
-- **windows** [386](https://github.com/janiltonmaciel/statiks/releases/download/0.4/statiks_0.4_windows_386.zip) / [amd64](https://github.com/janiltonmaciel/statiks/releases/download/0.4/statiks_0.4_windows_amd64.zip)
+  * **darwin (macOS)** [amd64](https://github.com/janiltonmaciel/statiks/releases/download/0.4/statiks_0.4_macOS_amd64.tar.gz)
 
-#### Via Homebrew (macOS)
+*  **linux** [386](https://github.com/janiltonmaciel/statiks/releases/download/0.4/statiks_0.4_linux_386.tar.gz) / [amd64](https://github.com/janiltonmaciel/statiks/releases/download/0.4/statiks_0.4_linux_amd64.tar.gz)
+
+  * **windows** [386](https://github.com/janiltonmaciel/statiks/releases/download/0.4/statiks_0.4_windows_386.zip) / [amd64](https://github.com/janiltonmaciel/statiks/releases/download/0.4/statiks_0.4_windows_amd64.zip)
+
+### Via Homebrew (macOS)
+
 ```bash
-$ brew tap janiltonmaciel/homebrew-tap
-$ brew install statiks
+brew tap janiltonmaciel/homebrew-tap
+brew install statiks
 ```
 
 #### Via Go
 
 ```bash
-$ go get github.com/janiltonmaciel/statiks
+go get github.com/janiltonmaciel/statiks
 ```
 
 ## Use
 ```bash
-$ statiks [options] <path>
+statiks [options] <path>
 
   -a value, --address value  set address (default: "0.0.0.0")
   -p value, --port value     set port (default: "9080")
@@ -39,20 +54,22 @@ $ statiks [options] <path>
   -v, --version              print the version
 ```
 
+> `<path>` defaults to `.` (relative path to the current directory)
+
 ## Examples
-  - start server at http://0.0.0.0:9000 serving "."
+  - start server at http://0.0.0.0:9000 serving "." current directory
   ```bash
-    $ statiks -port 9000
+statiks -port 9000
   ```
 
   - start server at http://0.0.0.0:9080 serving "/home" with CORS
   ```bash
-    $ statiks --cors /home
+statiks --cors /home
   ```
 
   - start server at http://192.168.1.100:9080 serving "/tmp" with gzip compression
   ```bash
-    $ statiks --host 192.168.1.100 --gzip /tmp
+statiks --host 192.168.1.100 --gzip /tmp
   ```
 
 
@@ -62,6 +79,3 @@ $ statiks [options] <path>
   ```bash
     $ statiks --ssl
   ``` -->
-
-
-
