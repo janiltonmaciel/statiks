@@ -14,6 +14,7 @@ Like Python's `SimpleHTTPServer` but scalable.
 * Content compression (auto, gzip, deflate, br)
 * Request logging
 * Cache control and "Last-Modified"
+* Delay response
 
 ### Installation
 
