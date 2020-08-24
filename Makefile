@@ -13,7 +13,7 @@ TAG := `git describe --tags`
 DATE := `date -u +"%Y-%m-%dT%H:%M:%SZ"`
 COMMIT := ""
 LDFLAGS := -X main.version=$(TAG) -X main.commit=$(COMMIT) -X main.date=$(DATE)
-GITHUB_TOKEN := $(shell git config --get github.token || echo $$GITHUB_TOKEN)
+GITHUB_TOKEN := $(shell git config --get github.releases-token || echo $$GITHUB_TOKEN)
 
 PROJECT := statiks
 SOURCE_FILES?=$$(go list ./... | grep -v /vendor/)
