@@ -32,7 +32,6 @@ $ statiks [options] <path>
   -d value, --delay value    add delay to responses (in milliseconds) (default: 0)
   -c value, --cache value    set cache time (in seconds) for cache-control max-age header (default: 0)
   -g, --gzip                 enable GZIP Content-Encoding
-  -s, --ssl                  enable https
   -q, --quiet                enable quiet mode, don't output each incoming request
   --hidden                   enable exclude directory entries whose names begin with a dot (.)
   --cors                     enable CORS allowing all origins with all standard methods with any header and credentials.
@@ -41,7 +40,7 @@ $ statiks [options] <path>
 ```
 
 ## Examples
-  start server at http://0.0.0.0:9000 serving "."
+  - start server at http://0.0.0.0:9000 serving "."
   ```bash
     $ statiks -port 9000
   ```
@@ -56,7 +55,13 @@ $ statiks [options] <path>
     $ statiks --host 192.168.1.100 --gzip /tmp
   ```
 
+
+  <!-- > Install [`mkcert`](https://github.com/FiloSottile/mkcert#installation) and run `mkcert -install`
   - start server at https://0.0.0.0:9080 serving "." with HTTPS
+
   ```bash
     $ statiks --ssl
-  ```
+  ``` -->
+
+
+

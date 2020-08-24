@@ -11,11 +11,9 @@ import (
 	"math/big"
 	"net"
 	"os"
-	"os/exec"
 	"os/user"
 	"path/filepath"
 	"runtime"
-	"strings"
 	"time"
 )
 
@@ -28,12 +26,16 @@ var userAndHostname string
 
 // nolint
 func init() {
-	u, _ := user.Current()
-	if u != nil {
+	u, err := user.Current()
+	if err == nil {
 		userAndHostname = u.Username + "@"
 	}
-	out, _ := exec.Command("hostname").Output()
-	userAndHostname += strings.TrimSpace(string(out))
+	if h, err := os.Hostname(); err == nil {
+		userAndHostname += h
+	}
+	if err == nil && u.Name != "" && u.Name != u.Username {
+		userAndHostname += " (" + u.Name + ")"
+	}
 }
 
 func GetMkCert(host string) (certArray []byte, keyArray []byte) {
@@ -54,27 +56,34 @@ func GetMkCert(host string) (certArray []byte, keyArray []byte) {
 			OrganizationalUnit: []string{userAndHostname},
 		},
 
-		NotAfter:  time.Now().AddDate(10, 0, 0), // nolint
-		NotBefore: time.Now(),
+		NotAfter: time.Now().AddDate(10, 0, 0),
+
+		// Fix the notBefore to temporarily bypass macOS Catalina's limit on
+		// certificate lifespan. Once mkcert provides an ACME server, automation
+		// will be the recommended way to guarantee uninterrupted functionality,
+		// and the lifespan will be shortened to 825 days. See issue 174 and
+		// https://support.apple.com/en-us/HT210176.
+		NotBefore: time.Date(2019, time.June, 1, 0, 0, 0, 0, time.UTC),
 
 		KeyUsage:              x509.KeyUsageKeyEncipherment | x509.KeyUsageDigitalSignature,
 		ExtKeyUsage:           []x509.ExtKeyUsage{x509.ExtKeyUsageServerAuth},
 		BasicConstraintsValid: true,
 	}
+
 	if ip := net.ParseIP(host); ip != nil {
 		tpl.IPAddresses = append(tpl.IPAddresses, ip)
 	} else {
 		tpl.DNSNames = append(tpl.DNSNames, host)
 	}
 
-	pub := priv.PublicKey
-	cert, err := x509.CreateCertificate(rand.Reader, tpl, caCert, &pub, caKey)
+	pub := priv.Public()
+	cert, err := x509.CreateCertificate(rand.Reader, tpl, caCert, pub, caKey)
 	fatalIfErr(err, "failed to generate certificate")
 
 	privDER, err := x509.MarshalPKCS8PrivateKey(priv)
 	fatalIfErr(err, "failed to marshal private key")
-	keyArray = pem.EncodeToMemory(&pem.Block{Type: "PRIVATE KEY", Bytes: privDER})
 
+	keyArray = pem.EncodeToMemory(&pem.Block{Type: "PRIVATE KEY", Bytes: privDER})
 	certArray = pem.EncodeToMemory(&pem.Block{Type: "CERTIFICATE", Bytes: cert})
 
 	return certArray, keyArray

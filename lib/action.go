@@ -88,6 +88,7 @@ func runHTTP(config statiksConfig, handler http.Handler) error {
 func runHTTPS(config statiksConfig, handler http.Handler) error {
 	addr := fmt.Sprintf("%s:%s", config.address, config.port)
 	cert, key := GetMkCert(addr)
+
 	keyPair, err := tls.X509KeyPair(cert, key)
 	if err != nil {
 		logger.Fatal("Error: Couldn't create key pair")
