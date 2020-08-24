@@ -58,7 +58,7 @@ git-tag:
 		exit 1; \
 	fi; \
 	TAG=$$REPLY; \
-	sed -i.bak "s/download\/[^/]*/download$$TAG/g" README.md && \
+	sed -i.bak "s/download\/[^/]*/download\/$$TAG/g" README.md && \
 	sed -i.bak "s/statiks_[^_]*/statiks$$TAG/g" README.md  && \
 	rm README.md.bak 2>/dev/null; \
 	git commit README.md -m "Update README.md with release $$TAG"; \
