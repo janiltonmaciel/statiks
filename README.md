@@ -16,14 +16,11 @@ Like Python's `SimpleHTTPServer` but scalable.
 * Cache control and "Last-Modified"
 * Delay response
 
-### Installation
+## Installation
 
-#### Binaries
-
+### Via Binaries
   * **darwin (macOS)** [amd64](https://github.com/janiltonmaciel/statiks/releases/download/0.7/statiks_0.7_darwin_amd64.tar.gz)
-
 *  **linux** [amd64](https://github.com/janiltonmaciel/statiks/releases/download/0.7/statiks_0.7_linux_amd64.tar.gz)
-
   * **windows** [amd64](https://github.com/janiltonmaciel/statiks/releases/download/0.7/statiks_0.7_windows_amd64.zip)
 
 ### Via Homebrew (macOS)
@@ -33,11 +30,17 @@ brew tap janiltonmaciel/homebrew-tap
 brew install statiks
 ```
 
-#### Via Go
+### Via Docker
 
+The official janilton/statiks image is available on Docker Hub.
 ```bash
-go get github.com/janiltonmaciel/statiks
+docker container run -p 9080:9080 -v .:/var/www --rm janilton/statiks
 ```
+
+> Volume dir: /var/www
+
+> Expose port: 9080
+
 
 ## Use
 ```bash
