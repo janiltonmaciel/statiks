@@ -20,11 +20,11 @@ Like Python's `SimpleHTTPServer` but scalable.
 
 #### Binaries
 
-  * **darwin (macOS)** [amd64](https://github.com/janiltonmaciel/statiks/releases/download/0.7/statiks_0.7_macOS_amd64.tar.gz)
+  * **darwin (macOS)** [amd64](https://github.com/janiltonmaciel/statiks/releases/download/0.7/statiks_0.7_darwin_amd64.tar.gz)
 
-*  **linux** [386](https://github.com/janiltonmaciel/statiks/releases/download/0.7/statiks_0.7_linux_386.tar.gz) / [amd64](https://github.com/janiltonmaciel/statiks/releases/download/0.7/statiks_0.7_linux_amd64.tar.gz)
+*  **linux** [amd64](https://github.com/janiltonmaciel/statiks/releases/download/0.7/statiks_0.7_linux_amd64.tar.gz)
 
-  * **windows** [386](https://github.com/janiltonmaciel/statiks/releases/download/0.7/statiks_0.7_windows_386.zip) / [amd64](https://github.com/janiltonmaciel/statiks/releases/download/0.7/statiks_0.7_windows_amd64.zip)
+  * **windows** [amd64](https://github.com/janiltonmaciel/statiks/releases/download/0.7/statiks_0.7_windows_amd64.zip)
 
 ### Via Homebrew (macOS)
 
