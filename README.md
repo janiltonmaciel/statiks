@@ -78,13 +78,11 @@ statiks --cors /home
 
   - start server at http://192.168.1.100:9080 serving "/tmp" with gzip compression
   ```bash
-statiks --host 192.168.1.100 --gzip /tmp
+statiks --address 192.168.1.100 --compression /tmp
   ```
 
-
-  <!-- > Install [`mkcert`](https://github.com/FiloSottile/mkcert#installation) and run `mkcert -install`
   - start server at https://0.0.0.0:9080 serving "." with HTTPS
 
   ```bash
-    $ statiks --ssl
-  ``` -->
+statiks --ssl
+```
