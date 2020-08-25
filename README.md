@@ -8,13 +8,13 @@ Like Python's `SimpleHTTPServer` but scalable.
 
 ## Features
 
-* HTTP and HTTPS (TLS)
-* CORS support
+* HTTP and HTTPS (TLS/SSL)
 * Support directory list
-* Content compression (auto, gzip, deflate, br)
-* Request logging
 * Cache control and "Last-Modified"
 * Delay response
+* CORS support
+* Content compression (gzip)
+* Request logging
 
 ## Installation
 
