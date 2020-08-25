@@ -160,3 +160,34 @@ func fatalIfErr(err error, msg string) {
 		logger.Fatalf("ERROR: %s: %s", msg, err)
 	}
 }
+
+// func runHTTPS(config statiksConfig, handler http.Handler) error {
+// 	addr := fmt.Sprintf("%s:%s", config.address, config.port)
+// 	cert, key := GetMkCert(addr)
+
+// 	keyPair, err := tls.X509KeyPair(cert, key)
+// 	if err != nil {
+// 		logger.Fatal("Error: Couldn't create key pair")
+// 	}
+
+// 	var certificates []tls.Certificate
+// 	certificates = append(certificates, keyPair)
+
+// 	cfg := &tls.Config{
+// 		MinVersion:               tls.VersionTLS12,
+// 		PreferServerCipherSuites: true,
+// 		Certificates:             certificates,
+// 	}
+
+// 	s := &http.Server{
+// 		Addr:         addr,
+// 		Handler:      handler,
+// 		ReadTimeout:  readTimeout,
+// 		WriteTimeout: writeTimeout,
+// 		TLSConfig:    cfg,
+// 	}
+
+// 	fmt.Printf("Running on \n ⚡️ https://%s, serving '%s'\n\n", addr, config.path)
+// 	fmt.Print("CTRL-C to stop the️ server\n")
+// 	return s.ListenAndServeTLS("", "")
+// }

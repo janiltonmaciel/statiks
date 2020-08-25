@@ -26,7 +26,7 @@ const (
 
 type fileHandler struct {
 	root   http.FileSystem
-	config statiksConfig
+	config Config
 }
 
 var htmlReplacer = strings.NewReplacer(
@@ -50,7 +50,7 @@ var htmlReplacer = strings.NewReplacer(
 // As a special case, the returned file server redirects any request
 // ending in "/index.html" to the same path, without the final
 // "index.html".
-func FileServer(root http.FileSystem, config statiksConfig) http.Handler {
+func FileServer(root http.FileSystem, config Config) http.Handler {
 	return &fileHandler{root, config}
 }
 
@@ -112,6 +112,10 @@ func serveFile(w http.ResponseWriter, r *http.Request, fh *fileHandler, name str
 		}
 	}
 
+	if d.IsDir() && config.noIndex {
+		http.Error(w, "not found", http.StatusNotFound)
+		return
+	}
 	// redirect if the directory name doesn't end in a slash
 	if d.IsDir() {
 		url := r.URL.Path
@@ -150,7 +154,7 @@ func serveFile(w http.ResponseWriter, r *http.Request, fh *fileHandler, name str
 	http.ServeContent(w, r, d.Name(), d.ModTime(), f)
 }
 
-func dirList(w http.ResponseWriter, r *http.Request, f http.File, config statiksConfig) {
+func dirList(w http.ResponseWriter, r *http.Request, f http.File, config Config) {
 	dirs, err := f.Readdir(-1)
 	if err != nil {
 		logf(r, "http: error reading directory: %v", err)
@@ -165,7 +169,7 @@ func dirList(w http.ResponseWriter, r *http.Request, f http.File, config statiks
 		name := d.Name()
 
 		// not allowed hidden file
-		if !config.hidden && IsHidden(name) {
+		if !config.includeHidden && IsHidden(name) {
 			continue
 		}
 
@@ -207,7 +211,7 @@ func localRedirect(w http.ResponseWriter, r *http.Request, newPath string) {
 	w.WriteHeader(http.StatusMovedPermanently)
 }
 
-func checkIfModifiedSince(r *http.Request, modtime time.Time, config statiksConfig) condResult {
+func checkIfModifiedSince(r *http.Request, modtime time.Time, config Config) condResult {
 	if r.Method != "GET" && r.Method != "HEAD" {
 		return condNone
 	}

@@ -1,25 +1,30 @@
 package lib
 
 import (
+	"fmt"
 	"strings"
 	"time"
 
 	"github.com/urfave/cli"
 )
 
-type statiksConfig struct {
-	path    string
-	address string
-	port    string
-	hidden  bool
-	maxage  string
-	cors    bool
-	ssl     bool
-	delay   time.Duration
-	quiet   bool
-	gzip    bool
+type Config struct {
+	path          string
+	host          string
+	port          string
+	quiet         bool
+	delay         time.Duration
+	cache         int
+	noIndex       bool
+	compression   bool
+	includeHidden bool
+	cors          bool
+	ssl           bool
+	cert          string
+	key           string
 
-	cache        bool
+	address      string
+	hasCache     bool
 	firstRequest bool
 }
 
@@ -28,20 +33,27 @@ var addressReplacer = strings.NewReplacer(
 	"https://", "",
 )
 
-func getStatiksConfig(c *cli.Context) (config statiksConfig) {
+func NewConfig(c *cli.Context) (config Config) {
+	config.host = getHostAddress(c)
 	config.path = getPath(c)
-	config.address = getContextAddress(c)
 	config.port = c.String("port")
-	config.ssl = c.Bool("ssl")
-	config.delay = getDelay(c)
-
-	config.hidden = !c.Bool("hidden")
-	config.maxage = getContextMaxAge(c)
-	config.cors = c.Bool("cors")
-	config.gzip = c.Bool("gzip")
 	config.quiet = c.Bool("quiet")
-	config.cache = config.maxage != "0"
+	config.delay = getDelay(c)
+	config.cache = c.Int("cache")
+	config.noIndex = c.Bool("no-index")
+	config.compression = c.Bool("compression")
+	config.includeHidden = c.Bool("include-hidden")
+	config.cors = c.Bool("cors")
+	config.ssl = c.Bool("ssl")
+	config.cert = c.String("cert")
+	config.key = c.String("key")
+
+	config.address = fmt.Sprintf("%s:%s", config.host, config.port)
 	config.firstRequest = true
+	config.hasCache = false
+	if config.cache > 0 {
+		config.hasCache = true
+	}
 
 	return config
 }
@@ -54,18 +66,9 @@ func getPath(c *cli.Context) (path string) {
 	return path
 }
 
-func getContextAddress(c *cli.Context) string {
+func getHostAddress(c *cli.Context) string {
 	address := c.String("address")
 	return addressReplacer.Replace(address)
-}
-
-func getContextMaxAge(c *cli.Context) string {
-	value := strings.TrimSpace(c.String("max-age"))
-	maxge := "0"
-	if value != "" {
-		maxge = value
-	}
-	return maxge
 }
 
 func getDelay(c *cli.Context) time.Duration {

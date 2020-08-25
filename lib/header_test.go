@@ -31,8 +31,8 @@ func TestNoCacheHandler(t *testing.T) {
 func TestCacheHandler(t *testing.T) {
 	testHandler := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {})
 	type args struct {
-		h      http.Handler
-		maxAge string
+		h     http.Handler
+		cache int
 	}
 	tests := []struct {
 		name string
@@ -41,19 +41,19 @@ func TestCacheHandler(t *testing.T) {
 	}{
 		{
 			"Nocache",
-			args{testHandler, "0"},
+			args{testHandler, 0},
 			"max-age=0",
 		},
 		{
 			"MaxAge",
-			args{testHandler, "99"},
+			args{testHandler, 99},
 			"max-age=99",
 		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			w := httptest.NewRecorder()
-			handler := lib.CacheHandler(tt.args.h, tt.args.maxAge) // nolint
+			handler := lib.CacheHandler(tt.args.h, tt.args.cache) // nolint
 			handler.ServeHTTP(w, nil)
 			assert.Equal(t, w.Header().Get("Cache-Control"), tt.want) // nolint
 		})

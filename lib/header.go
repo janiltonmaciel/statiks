@@ -24,8 +24,8 @@ func NoCacheHandler(h http.Handler) http.Handler {
 	return http.HandlerFunc(fn)
 }
 
-func CacheHandler(h http.Handler, maxAge string) http.Handler {
-	v := fmt.Sprintf("max-age=%s", maxAge)
+func CacheHandler(h http.Handler, cache int) http.Handler {
+	v := fmt.Sprintf("max-age=%d", cache)
 	fn := func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Cache-Control", v)
 		h.ServeHTTP(w, r)

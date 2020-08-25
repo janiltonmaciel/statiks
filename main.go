@@ -25,8 +25,8 @@ func init() {
 func main() {
 	app := cli.NewApp()
 	app.Name = "statiks"
-	app.Usage = "a simple http server"
-	app.UsageText = "statiks [options] [path]"
+	app.Usage = "Fast, zero-configuration, static HTTP filer server."
+	app.UsageText = "statiks [options] <path>"
 	app.Author = author
 	app.Version = version
 	app.Action = lib.MainAction
@@ -35,33 +35,13 @@ func main() {
 		cli.StringFlag{
 			Name:  "a, address",
 			Value: "0.0.0.0",
-			Usage: "set address",
+			Usage: "host address to bind to",
 		},
 
 		cli.StringFlag{
 			Name:  "p, port",
 			Value: "9080",
-			Usage: "set port",
-		},
-
-		cli.Int64Flag{
-			Name:  "d, delay",
-			Usage: "add delay to responses (in milliseconds)",
-		},
-
-		cli.StringFlag{
-			Name:  "c, cache",
-			Usage: "set cache time (in seconds) for cache-control max-age header (default: 0)",
-		},
-
-		cli.BoolFlag{
-			Name:  "g, gzip",
-			Usage: "enable GZIP Content-Encoding",
-		},
-
-		cli.BoolFlag{
-			Name:  "s, ssl",
-			Usage: "enable https",
+			Usage: "port number",
 		},
 
 		cli.BoolFlag{
@@ -69,14 +49,53 @@ func main() {
 			Usage: "enable quiet mode, don't output each incoming request",
 		},
 
+		cli.Int64Flag{
+			Name:  "delay",
+			Value: 0,
+			Usage: "add delay to responses (in milliseconds)",
+		},
+
+		cli.IntFlag{
+			Name:  "cache",
+			Value: 0,
+			Usage: "set cache time (in seconds) for cache-control max-age header",
+		},
+
 		cli.BoolFlag{
-			Name:  "hidden",
-			Usage: "enable exclude directory entries whose names begin with a dot (.)",
+			Name:  "no-index",
+			Usage: "disable directory listings",
+		},
+
+		cli.BoolFlag{
+			Name:  "compression",
+			Usage: "enable gzip compression",
+		},
+
+		cli.BoolFlag{
+			Name:  "include-hidden",
+			Usage: "enable hidden files as normal",
 		},
 
 		cli.BoolFlag{
 			Name:  "cors",
 			Usage: "enable CORS allowing all origins with all standard methods with any header and credentials.",
+		},
+
+		cli.BoolFlag{
+			Name:  "ssl",
+			Usage: "enable https",
+		},
+
+		cli.StringFlag{
+			Name:  "cert",
+			Value: "cert.pem",
+			Usage: "path to the ssl cert file",
+		},
+
+		cli.StringFlag{
+			Name:  "key",
+			Value: "key.pem",
+			Usage: "path to the ssl key file",
 		},
 	}
 
