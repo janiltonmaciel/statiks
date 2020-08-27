@@ -41,17 +41,17 @@ OPTIONS:
 {{- end }}
 
 EXAMPLES:
-	- start server at http://0.0.0.0:9000 serving "."
+	- start server at http://0.0.0.0:9000 serving "." current directory
 			statiks -port 9000
 
 	- start server at http://0.0.0.0:9080 serving "/home" with CORS
 			statiks --cors /home
 
 	- start server at http://192.168.1.100:9080 serving "/tmp" with gzip compression
-			statiks --host 192.168.1.100 --gzip /tmp
+			statiks --host 192.168.1.100 --compression /tmp
 
 	- start server at https://0.0.0.0:9080 serving "." with HTTPS
-			statiks --ssl
+			statiks --ssl --cert cert.pem --key key.pem
 
 {{- if .Version }}
 

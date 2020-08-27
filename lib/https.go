@@ -56,14 +56,8 @@ func GetMkCert(host string) (certArray []byte, keyArray []byte) {
 			OrganizationalUnit: []string{userAndHostname},
 		},
 
-		NotAfter: time.Now().AddDate(10, 0, 0),
-
-		// Fix the notBefore to temporarily bypass macOS Catalina's limit on
-		// certificate lifespan. Once mkcert provides an ACME server, automation
-		// will be the recommended way to guarantee uninterrupted functionality,
-		// and the lifespan will be shortened to 825 days. See issue 174 and
-		// https://support.apple.com/en-us/HT210176.
-		NotBefore: time.Date(2019, time.June, 1, 0, 0, 0, 0, time.UTC),
+		NotAfter:  time.Now().AddDate(0, 1, 0),
+		NotBefore: time.Now(),
 
 		KeyUsage:              x509.KeyUsageKeyEncipherment | x509.KeyUsageDigitalSignature,
 		ExtKeyUsage:           []x509.ExtKeyUsage{x509.ExtKeyUsageServerAuth},
@@ -160,34 +154,3 @@ func fatalIfErr(err error, msg string) {
 		logger.Fatalf("ERROR: %s: %s", msg, err)
 	}
 }
-
-// func runHTTPS(config statiksConfig, handler http.Handler) error {
-// 	addr := fmt.Sprintf("%s:%s", config.address, config.port)
-// 	cert, key := GetMkCert(addr)
-
-// 	keyPair, err := tls.X509KeyPair(cert, key)
-// 	if err != nil {
-// 		logger.Fatal("Error: Couldn't create key pair")
-// 	}
-
-// 	var certificates []tls.Certificate
-// 	certificates = append(certificates, keyPair)
-
-// 	cfg := &tls.Config{
-// 		MinVersion:               tls.VersionTLS12,
-// 		PreferServerCipherSuites: true,
-// 		Certificates:             certificates,
-// 	}
-
-// 	s := &http.Server{
-// 		Addr:         addr,
-// 		Handler:      handler,
-// 		ReadTimeout:  readTimeout,
-// 		WriteTimeout: writeTimeout,
-// 		TLSConfig:    cfg,
-// 	}
-
-// 	fmt.Printf("Running on \n ⚡️ https://%s, serving '%s'\n\n", addr, config.path)
-// 	fmt.Print("CTRL-C to stop the️ server\n")
-// 	return s.ListenAndServeTLS("", "")
-// }

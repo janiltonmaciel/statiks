@@ -25,7 +25,7 @@ func init() {
 func main() {
 	app := cli.NewApp()
 	app.Name = "statiks"
-	app.Usage = "Fast, zero-configuration, static HTTP filer server."
+	app.Usage = "fast, zero-configuration, static HTTP filer server."
 	app.UsageText = "statiks [options] <path>"
 	app.Author = author
 	app.Version = version
@@ -33,7 +33,7 @@ func main() {
 
 	app.Flags = []cli.Flag{
 		cli.StringFlag{
-			Name:  "a, address",
+			Name:  "h, host",
 			Value: "0.0.0.0",
 			Usage: "host address to bind to",
 		},
@@ -100,7 +100,7 @@ func main() {
 	}
 
 	cli.HelpFlag = cli.BoolFlag{
-		Name:  "h, help",
+		Name:  "help",
 		Usage: "show help",
 	}
 
