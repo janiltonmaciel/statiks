@@ -86,7 +86,7 @@ statiks --host 192.168.1.100 --compression /tmp
 statiks --ssl --cert cert.pem --key key.pem
 ```
 
-	- start server at http://0.0.0.0:9000 serving "/tmp" with delay response 100ms
+	- start server at http://0.0.0.0:9080 serving "/tmp" with delay response 100ms
 
 ```bash
 statiks -add-delay 100 /tmp
