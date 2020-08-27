@@ -3,7 +3,7 @@ package lib
 import (
 	"fmt"
 
-	"github.com/urfave/cli"
+	"github.com/urfave/cli/v2"
 )
 
 // AppHelpTemplate is the text template for the Default help topic.
@@ -69,9 +69,20 @@ AUTHOR{{with $length := len .Authors}}{{if ne 1 $length}}S{{end}}{{end}}:
 
 func VersionPrinter(commit, date string) func(c *cli.Context) {
 	return func(c *cli.Context) {
+		printLogo()
 		fmt.Fprintf(c.App.Writer, "version: %s\n", c.App.Version)
-		fmt.Fprintf(c.App.Writer, "author: %s\n", c.App.Author)
 		fmt.Fprintf(c.App.Writer, "commit: %s\n", commit)
 		fmt.Fprintf(c.App.Writer, "date: %s\n", date)
+		fmt.Fprintf(c.App.Writer, "author: %s\n", c.App.Authors[0].Name)
 	}
+}
+
+func printLogo() {
+	fmt.Println(`
+     _______.___________.    ___   .___________. __   __  ___      _______.
+    /       |           |   /   \  |           ||  | |  |/  /     /       |
+   |   (----'---|  |----'  /  ^  \ '---|  |----'|  | |  '  /     |   (----'
+    \   \       |  |      /  /_\  \    |  |     |  | |    <       \   \
+.----)   |      |  |     /  _____  \   |  |     |  | |  .  \  .----)   |
+|_______/       |__|    /__/     \__\  |__|     |__| |__|\__\ |_______/`)
 }

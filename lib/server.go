@@ -81,17 +81,20 @@ func (s *Server) Run() error {
 }
 
 func (s *Server) runHTTP() error {
-	fmt.Printf("Running on HTTP\n ⚡️ http://%s, serving '%s'\n\n", s.config.address, s.config.path)
+	printLogo()
+	fmt.Printf("\nRunning on HTTP\n ⚡️ http://%s, serving '%s'\n\n", s.config.address, s.config.path)
 	fmt.Print("CTRL-C to stop the️ server\n")
 	return http.ListenAndServe(s.config.address, s.handler)
 }
 
 func (s *Server) runHTTPS() error {
-	fmt.Printf("Running on HTTPS\n ⚡️ https://%s, serving '%s'\n\n", s.config.address, s.config.path)
+	printLogo()
+	fmt.Printf("\nRunning on HTTPS\n ⚡️ https://%s, serving '%s'\n\n", s.config.address, s.config.path)
 	fmt.Print("CTRL-C to stop the️ server\n")
 	return http.ListenAndServeTLS(s.config.address, s.config.cert, s.config.key, s.handler)
 }
 
+// nolint
 func (s *Server) runHTTPSMemory() error {
 	cert, key := GetMkCert(s.config.host)
 
