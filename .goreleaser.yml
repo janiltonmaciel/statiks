@@ -48,6 +48,7 @@ dockers:
     # Templates of the Docker image names.
     image_templates:
     - "janilton/statiks:latest"
+    - "janilton/statiks:{{ .Major }}.{{ .Minor }}"
 
     # If your Dockerfile copies files other than the binary itself,
     # you should list them here as well.
