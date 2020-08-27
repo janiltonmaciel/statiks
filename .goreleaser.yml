@@ -63,6 +63,6 @@ dockers:
       - go.mod
       - go.sum
       - README.md
-      - Makefile
       - main.go
+      - cmd
       - lib

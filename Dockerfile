@@ -11,14 +11,14 @@ ENV BUILD_DIR=/go/src/github.com/janiltonmaciel/statiks
 WORKDIR ${BUILD_DIR}
 
 COPY go.* *.go *.md ./
+COPY ./cmd ./cmd/
 COPY ./lib ./lib/
 
-RUN apk update && apk add --no-cache ca-certificates make bash git
+RUN apk update && apk add --no-cache ca-certificates make bash git && update-ca-certificates
 ENV CGO_ENABLED=0 GO111MODULE=on
 RUN go mod download
 
-COPY Makefile ./
-RUN CGO_ENABLED=${CGO_ENABLED:-0} GOOS=${GOOS:-linux} GOARCH=${GOARCH:-amd64} make build_optimized
+RUN CGO_ENABLED=${CGO_ENABLED:-0} GOOS=${GOOS:-linux} GOARCH=${GOARCH:-amd64} go build -ldflags "-w -s" -o statiks main.go
 RUN echo '<!doctype html> <h1><a href="https://github.com/janiltonmaciel/statiks">statiks</a> works</h1><img src="./img.svg"/>' > index.html \
     && echo '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500"></svg>' > img.svg \
  && true
