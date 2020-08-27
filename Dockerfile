@@ -36,4 +36,4 @@ VOLUME ["/var/www"]
 EXPOSE 9080
 
 ENTRYPOINT ["statiks"]
-CMD ["--address", "0.0.0.0", "--port", "9080", "--cors", "/var/www/"]
+CMD ["--host", "0.0.0.0", "--port", "9080", "--cors", "/var/www/"]

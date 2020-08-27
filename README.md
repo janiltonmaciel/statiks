@@ -47,20 +47,19 @@ docker container run -p 9080:9080 -v .:/var/www --rm janilton/statiks
 statiks [options] <path>
 
 OPTIONS:
-  -a value, --address value  host address to bind to (default: "0.0.0.0")
-  -p value, --port value     port number (default: "9080")
-  -q, --quiet                enable quiet mode, don't output each incoming request
-  --delay value              add delay to responses (in milliseconds) (default: 0)
-  --cache value              set cache time (in seconds) for cache-control max-age header (default: 0)
-  --no-index                 disable directory listings
-  --compression              enable gzip compression
-  --include-hidden           enable hidden files as normal
-  --cors                     enable CORS allowing all origins with all standard methods with any header and credentials.
-  --ssl                      enable https
-  --cert value               path to the ssl cert file (default: "cert.pem")
-  --key value                path to the ssl key file (default: "key.pem")
-  -h, --help                 show help
-  -v, --version              print the version
+  --host value, -h value  host address to bind to (default: "0.0.0.0") [$HOST]
+  --port value, -p value  port number (default: "9080") [$PORT]
+  --quiet, -q             enable quiet mode, don't output each incoming request (default: false)
+  --delay value           add delay to responses (in milliseconds) (default: 0)
+  --cache value           set cache time (in seconds) for cache-control max-age header (default: 0)
+  --no-index              disable directory listings (default: false)
+  --compression           enable gzip compression (default: false)
+  --include-hidden        enable hidden files as normal (default: false)
+  --cors                  enable CORS allowing all origins with all standard methods with any header and credentials. (default: false)
+  --ssl                   enable https (default: false)
+  --cert value            path to the ssl cert file (default: "cert.pem")
+  --key value             path to the ssl key file (default: "key.pem")
+  --help                  show help (default: false)
 ```
 
 > `<path>` defaults to `.` (relative path to the current directory)
