@@ -32,7 +32,7 @@ brew install statiks
 
 ### Via Docker
 
-The official janilton/statiks image is available on Docker Hub.
+The official [janilton/statiks](https://hub.docker.com/r/janilton/statiks) image is available on Docker Hub.
 ```bash
 docker container run -p 9080:9080 -v .:/var/www --rm janilton/statiks
 ```
@@ -91,3 +91,11 @@ statiks --ssl --cert cert.pem --key key.pem
 ```bash
 statiks -add-delay 100 /tmp
 ```
+
+## Credits
+
+* Cli - [urfave/cli](https://github.com/urfave/cli)
+* Negroni - [urfave/negroni](https://github.com/urfave/negroni)
+* Cors - [rs/cors](https://github.com/rs/cors)
+* Testify - [stretchr/testify](https://github.com/stretchr/testify)
+* Mkcert - [FiloSottile/mkcert](https://github.com/FiloSottile/mkcert)

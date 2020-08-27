@@ -1,5 +1,7 @@
 package lib
 
+// The code is modified from https://github.com/FiloSottile/mkcert/.
+
 import (
 	"crypto"
 	"crypto/rand"
