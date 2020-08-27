@@ -66,22 +66,28 @@ OPTIONS:
 
 ## Examples
   - start server at http://0.0.0.0:9000 serving "." current directory
-  ```bash
+```bash
 statiks -port 9000
-  ```
+```
 
   - start server at http://0.0.0.0:9080 serving "/home" with CORS
-  ```bash
+```bash
 statiks --cors /home
-  ```
+```
 
   - start server at http://192.168.1.100:9080 serving "/tmp" with gzip compression
-  ```bash
+```bash
 statiks --host 192.168.1.100 --compression /tmp
-  ```
+```
 
   - start server at https://0.0.0.0:9080 serving "." with HTTPS
 
-  ```bash
+```bash
 statiks --ssl --cert cert.pem --key key.pem
+```
+
+	- start server at http://0.0.0.0:9000 serving "/tmp" with delay response 100ms
+
+```bash
+statiks -add-delay 100 /tmp
 ```

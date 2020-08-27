@@ -28,7 +28,7 @@ type Config struct {
 	firstRequest bool
 }
 
-var addressReplacer = strings.NewReplacer(
+var hostReplacer = strings.NewReplacer(
 	"http://", "",
 	"https://", "",
 )
@@ -67,11 +67,11 @@ func getPath(c *cli.Context) (path string) {
 }
 
 func getHostAddress(c *cli.Context) string {
-	address := c.String("address")
-	return addressReplacer.Replace(address)
+	host := c.String("host")
+	return hostReplacer.Replace(host)
 }
 
 func getDelay(c *cli.Context) time.Duration {
-	delay := c.Int64("delay")
+	delay := c.Int64("add-delay")
 	return time.Duration(delay) * time.Millisecond
 }

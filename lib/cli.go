@@ -53,6 +53,9 @@ EXAMPLES:
 	- start server at https://0.0.0.0:9080 serving "." with HTTPS
 			statiks --ssl --cert cert.pem --key key.pem
 
+	- start server at http://0.0.0.0:9000 serving "/tmp" with delay response 100ms
+			statiks -add-delay 100 /tmp
+
 {{- if .Version }}
 
 VERSION:

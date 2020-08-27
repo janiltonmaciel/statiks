@@ -68,7 +68,7 @@ func createFlags() []cli.Flag {
 			Usage:   "enable quiet mode, don't output each incoming request",
 		},
 		&cli.Int64Flag{
-			Name:  "delay",
+			Name:  "add-delay",
 			Value: 0,
 			Usage: "add delay to responses (in milliseconds)",
 		},
