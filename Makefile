@@ -29,7 +29,7 @@ runs:
 ## Runs the project unit tests
 test:
 	@go test -timeout 10s  -v -covermode atomic -cover -coverprofile coverage.txt $(SOURCE_FILES)
-	@go tool vet . 2>&1 | grep -v '^vendor\/' | grep -v '^exit\ status\ 1' || true
+	@go vet . 2>&1 | grep -v '^vendor\/' | grep -v '^exit\ status\ 1' || true
 
 ## Run all the tests and opens the coverage report
 test-cover: test

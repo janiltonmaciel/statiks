@@ -18,19 +18,19 @@ Like Python's `SimpleHTTPServer` but scalable.
 
 ## Installation
 
-### Via Binaries
+#### Via Binaries
   - **darwin (macOS)** [amd64](https://github.com/janiltonmaciel/statiks/releases/download/0.12/statiks_0.12_darwin_amd64.tar.gz)
   - **linux** [amd64](https://github.com/janiltonmaciel/statiks/releases/download/0.12/statiks_0.12_linux_amd64.tar.gz)
   - **windows** [amd64](https://github.com/janiltonmaciel/statiks/releases/download/0.12/statiks_0.12_windows_amd64.zip)
 
-### Via Homebrew (macOS)
+#### Via Homebrew (macOS)
 
 ```bash
 brew tap janiltonmaciel/homebrew-tap
 brew install statiks
 ```
 
-### Via Docker
+#### Via Docker
 
 The official [janilton/statiks](https://hub.docker.com/r/janilton/statiks) image is available on Docker Hub.
 ```bash
@@ -50,7 +50,7 @@ OPTIONS:
   --host value, -h value  host address to bind to (default: "0.0.0.0") [$HOST]
   --port value, -p value  port number (default: "9080") [$PORT]
   --quiet, -q             enable quiet mode, don't output each incoming request (default: false)
-  --delay value           add delay to responses (in milliseconds) (default: 0)
+  --add-delay value       add delay to responses (in milliseconds) (default: 0)
   --cache value           set cache time (in seconds) for cache-control max-age header (default: 0)
   --no-index              disable directory listings (default: false)
   --compression           enable gzip compression (default: false)
@@ -89,13 +89,14 @@ statiks --ssl --cert cert.pem --key key.pem
   - start server at http://0.0.0.0:9080 serving "/tmp" with delay response 100ms
 
 ```bash
-statiks -add-delay 100 /tmp
+statiks --add-delay 100 /tmp
 ```
 
 ## Credits
 
+* Check - [go-check/check](https://github.com/go-check/check) (testing)
 * Cli - [urfave/cli](https://github.com/urfave/cli)
 * Cors - [rs/cors](https://github.com/rs/cors)
+* Httpexpect - [gavv/httpexpect](https://github.com/gavv/httpexpect) (testing)
 * Mkcert - [FiloSottile/mkcert](https://github.com/FiloSottile/mkcert)
 * Negroni - [urfave/negroni](https://github.com/urfave/negroni)
-* Testify - [stretchr/testify](https://github.com/stretchr/testify)

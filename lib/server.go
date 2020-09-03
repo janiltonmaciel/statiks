@@ -19,27 +19,27 @@ type Server struct {
 }
 
 func NewServer(config Config) *Server {
-	docroot, err := filepath.Abs(config.path)
+	docroot, err := filepath.Abs(config.Path)
 	if err != nil {
 		panic(err)
 	}
 
 	nss := neuteredFileSystem{
 		fs:     http.Dir(docroot),
-		hidden: !config.includeHidden,
+		hidden: config.IncludeHidden,
 	}
 	fs := FileServer(nss, config)
 
 	var handler http.Handler
-	if config.hasCache {
-		handler = CacheHandler(fs, config.cache)
+	if config.HasCache {
+		handler = CacheHandler(fs, config.Cache)
 	} else {
 		handler = NoCacheHandler(fs)
 	}
 
 	// add delay
-	if config.delay > 0 {
-		handler = DelayHandler(handler, config.delay)
+	if config.Delay > 0 {
+		handler = DelayHandler(handler, config.Delay)
 	}
 
 	mux := http.NewServeMux()
@@ -49,17 +49,17 @@ func NewServer(config Config) *Server {
 	n.Use(negroni.NewRecovery())
 
 	// add middleware logger
-	if !config.quiet {
+	if !config.Quiet {
 		n.Use(NewLogger(projectName))
 	}
 
 	// add middleware gzip
-	if config.compression {
+	if config.Compression {
 		n.Use(gzip.Gzip(gzip.BestSpeed))
 	}
 
 	// enable cors
-	if config.cors {
+	if config.CORS {
 		n.Use(cors.AllowAll())
 	}
 
@@ -74,29 +74,33 @@ func NewServer(config Config) *Server {
 }
 
 func (s *Server) Run() error {
-	if s.config.ssl {
+	if s.config.SSL {
 		return s.runHTTPS()
 	}
 	return s.runHTTP()
 }
 
+func (s *Server) GetHandler() http.Handler {
+	return s.handler
+}
+
 func (s *Server) runHTTP() error {
 	printLogo()
-	fmt.Printf("\nRunning on HTTP\n ⚡️ http://%s, serving '%s'\n\n", s.config.address, s.config.path)
+	fmt.Printf("\nRunning on HTTP\n ⚡️ http://%s, serving '%s'\n\n", s.config.Address, s.config.Path)
 	fmt.Print("CTRL-C to stop the️ server\n")
-	return http.ListenAndServe(s.config.address, s.handler)
+	return http.ListenAndServe(s.config.Address, s.handler)
 }
 
 func (s *Server) runHTTPS() error {
 	printLogo()
-	fmt.Printf("\nRunning on HTTPS\n ⚡️ https://%s, serving '%s'\n\n", s.config.address, s.config.path)
+	fmt.Printf("\nRunning on HTTPS\n ⚡️ https://%s, serving '%s'\n\n", s.config.Address, s.config.Path)
 	fmt.Print("CTRL-C to stop the️ server\n")
-	return http.ListenAndServeTLS(s.config.address, s.config.cert, s.config.key, s.handler)
+	return http.ListenAndServeTLS(s.config.Address, s.config.Cert, s.config.Key, s.handler)
 }
 
 // nolint
 func (s *Server) runHTTPSMemory() error {
-	cert, key := GetMkCert(s.config.host)
+	cert, key := GetMkCert(s.config.Host)
 
 	keyPair, err := tls.X509KeyPair(cert, key)
 	if err != nil {
@@ -113,14 +117,13 @@ func (s *Server) runHTTPSMemory() error {
 	}
 
 	srv := &http.Server{
-		Addr:    s.config.address,
+		Addr:    s.config.Address,
 		Handler: s.handler,
-		// ReadTimeout:  readTimeout,
-		// WriteTimeout: writeTimeout,
 		TLSConfig: cfg,
 	}
 
-	fmt.Printf("Running on HTTPS\n ⚡️ https://%s, serving '%s'\n\n", s.config.address, s.config.path)
+	printLogo()
+	fmt.Printf("Running on HTTPS\n ⚡️ https://%s, serving '%s'\n\n", s.config.Address, s.config.Path)
 	fmt.Print("CTRL-C to stop the️ server\n")
 	return srv.ListenAndServeTLS("", "")
 }

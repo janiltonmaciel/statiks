@@ -3,10 +3,10 @@ package lib_test
 import (
 	"net/http"
 	"net/http/httptest"
-	"testing"
+	"time"
 
 	"github.com/janiltonmaciel/statiks/lib"
-	"github.com/stretchr/testify/assert"
+	check "gopkg.in/check.v1"
 )
 
 var noCacheHeaders = map[string]string{
@@ -16,7 +16,7 @@ var noCacheHeaders = map[string]string{
 	"Expires":         "0",
 }
 
-func TestNoCacheHandler(t *testing.T) {
+func (s *StatiksSuite) TestNoCacheHandler(c *check.C) {
 	testHandler := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {})
 	w := httptest.NewRecorder()
 
@@ -24,11 +24,11 @@ func TestNoCacheHandler(t *testing.T) {
 	handler.ServeHTTP(w, nil)
 
 	for k, v := range noCacheHeaders {
-		assert.Equal(t, w.Header().Get(k), v)
+		c.Assert(w.Header().Get(k), check.Equals, v)
 	}
 }
 
-func TestCacheHandler(t *testing.T) {
+func (s *StatiksSuite) TestCacheHandler(c *check.C) {
 	testHandler := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {})
 	type args struct {
 		h     http.Handler
@@ -50,12 +50,21 @@ func TestCacheHandler(t *testing.T) {
 			"max-age=99",
 		},
 	}
+
 	for _, tt := range tests {
-		t.Run(tt.name, func(t *testing.T) {
-			w := httptest.NewRecorder()
-			handler := lib.CacheHandler(tt.args.h, tt.args.cache) // nolint
-			handler.ServeHTTP(w, nil)
-			assert.Equal(t, w.Header().Get("Cache-Control"), tt.want) // nolint
-		})
+		w := httptest.NewRecorder()
+		handler := lib.CacheHandler(tt.args.h, tt.args.cache)
+		handler.ServeHTTP(w, nil)
+		c.Assert(w.Header().Get("Cache-Control"), check.Equals, tt.want)
 	}
+}
+
+func (s *StatiksSuite) TestAddDelayHandler(c *check.C) {
+	testHandler := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {})
+	w := httptest.NewRecorder()
+
+	handler := lib.DelayHandler(testHandler, 100*time.Millisecond)
+	handler.ServeHTTP(w, nil)
+
+	c.Assert(w.Header().Get("X-Delay"), check.Equals, "100ms")
 }

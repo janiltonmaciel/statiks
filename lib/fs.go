@@ -112,7 +112,7 @@ func serveFile(w http.ResponseWriter, r *http.Request, fh *fileHandler, name str
 		}
 	}
 
-	if d.IsDir() && config.noIndex {
+	if d.IsDir() && config.NoIndex {
 		http.Error(w, "not found", http.StatusNotFound)
 		return
 	}
@@ -167,9 +167,10 @@ func dirList(w http.ResponseWriter, r *http.Request, f http.File, config Config)
 	fmt.Fprintf(w, "<pre>\n")
 	for _, d := range dirs {
 		name := d.Name()
+		isHidden := IsHidden(name)
 
-		// not allowed hidden file
-		if !config.includeHidden && IsHidden(name) {
+		if !config.IncludeHidden && isHidden {
+			// not allowed hidden file
 			continue
 		}
 

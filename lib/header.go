@@ -37,6 +37,7 @@ func CacheHandler(h http.Handler, cache int) http.Handler {
 func DelayHandler(h http.Handler, delay time.Duration) http.Handler {
 	fn := func(w http.ResponseWriter, r *http.Request) {
 		time.Sleep(delay)
+		w.Header().Set("X-Delay", delay.String())
 		h.ServeHTTP(w, r)
 	}
 

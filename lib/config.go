@@ -9,22 +9,22 @@ import (
 )
 
 type Config struct {
-	path          string
-	host          string
-	port          string
-	quiet         bool
-	delay         time.Duration
-	cache         int
-	noIndex       bool
-	compression   bool
-	includeHidden bool
-	cors          bool
-	ssl           bool
-	cert          string
-	key           string
+	Address       string
+	Path          string
+	Host          string
+	Port          string
+	Quiet         bool
+	Delay         time.Duration
+	Cache         int
+	NoIndex       bool
+	Compression   bool
+	IncludeHidden bool
+	CORS          bool
+	SSL           bool
+	Cert          string
+	Key           string
 
-	address      string
-	hasCache     bool
+	HasCache     bool
 	firstRequest bool
 }
 
@@ -34,25 +34,25 @@ var hostReplacer = strings.NewReplacer(
 )
 
 func NewConfig(c *cli.Context) (config Config) {
-	config.host = getHostAddress(c)
-	config.path = getPath(c)
-	config.port = c.String("port")
-	config.quiet = c.Bool("quiet")
-	config.delay = getDelay(c)
-	config.cache = c.Int("cache")
-	config.noIndex = c.Bool("no-index")
-	config.compression = c.Bool("compression")
-	config.includeHidden = c.Bool("include-hidden")
-	config.cors = c.Bool("cors")
-	config.ssl = c.Bool("ssl")
-	config.cert = c.String("cert")
-	config.key = c.String("key")
+	config.Host = getHostAddress(c)
+	config.Path = getPath(c)
+	config.Port = c.String("port")
+	config.Quiet = c.Bool("quiet")
+	config.Delay = getDelay(c)
+	config.Cache = c.Int("cache")
+	config.NoIndex = c.Bool("no-index")
+	config.Compression = c.Bool("compression")
+	config.IncludeHidden = c.Bool("include-hidden")
+	config.CORS = c.Bool("cors")
+	config.SSL = c.Bool("ssl")
+	config.Cert = c.String("cert")
+	config.Key = c.String("key")
 
-	config.address = fmt.Sprintf("%s:%s", config.host, config.port)
+	config.Address = fmt.Sprintf("%s:%s", config.Host, config.Port)
 	config.firstRequest = true
-	config.hasCache = false
-	if config.cache > 0 {
-		config.hasCache = true
+	config.HasCache = false
+	if config.Cache > 0 {
+		config.HasCache = true
 	}
 
 	return config
