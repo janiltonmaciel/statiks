@@ -19,9 +19,9 @@ Like Python's `SimpleHTTPServer` but scalable.
 ## Installation
 
 #### Via Binaries
-  - **darwin (macOS)** [amd64](https://github.com/janiltonmaciel/statiks/releases/download/0.13/statiks_0.13_darwin_amd64.tar.gz)
-  - **linux** [amd64](https://github.com/janiltonmaciel/statiks/releases/download/0.13/statiks_0.13_linux_amd64.tar.gz)
-  - **windows** [amd64](https://github.com/janiltonmaciel/statiks/releases/download/0.13/statiks_0.13_windows_amd64.zip)
+  - **darwin (macOS)** [amd64](https://github.com/janiltonmaciel/statiks/releases/download/0.14/statiks_0.14_darwin_amd64.tar.gz)
+  - **linux** [amd64](https://github.com/janiltonmaciel/statiks/releases/download/0.14/statiks_0.14_linux_amd64.tar.gz)
+  - **windows** [amd64](https://github.com/janiltonmaciel/statiks/releases/download/0.14/statiks_0.14_windows_amd64.zip)
 
 #### Via Homebrew (macOS)
 
