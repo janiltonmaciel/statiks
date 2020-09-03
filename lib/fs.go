@@ -167,7 +167,7 @@ func dirList(w http.ResponseWriter, r *http.Request, f http.File, config Config)
 	fmt.Fprintf(w, "<pre>\n")
 	for _, d := range dirs {
 		name := d.Name()
-		isHidden := IsHidden(name)
+		isHidden := HideFile(name)
 
 		if !config.IncludeHidden && isHidden {
 			// not allowed hidden file

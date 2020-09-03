@@ -98,5 +98,4 @@ statiks --add-delay 100 /tmp
 * Cli - [urfave/cli](https://github.com/urfave/cli)
 * Cors - [rs/cors](https://github.com/rs/cors)
 * Httpexpect - [gavv/httpexpect](https://github.com/gavv/httpexpect) (testing)
-* Mkcert - [FiloSottile/mkcert](https://github.com/FiloSottile/mkcert)
 * Negroni - [urfave/negroni](https://github.com/urfave/negroni)

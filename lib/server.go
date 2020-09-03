@@ -1,7 +1,6 @@
 package lib
 
 import (
-	"crypto/tls"
 	"fmt"
 	"net/http"
 	"path/filepath"
@@ -98,32 +97,3 @@ func (s *Server) runHTTPS() error {
 	return http.ListenAndServeTLS(s.config.Address, s.config.Cert, s.config.Key, s.handler)
 }
 
-// nolint
-func (s *Server) runHTTPSMemory() error {
-	cert, key := GetMkCert(s.config.Host)
-
-	keyPair, err := tls.X509KeyPair(cert, key)
-	if err != nil {
-		logger.Fatal("Error: Couldn't create key pair")
-	}
-
-	var certificates []tls.Certificate
-	certificates = append(certificates, keyPair)
-
-	cfg := &tls.Config{
-		MinVersion:               tls.VersionTLS12,
-		PreferServerCipherSuites: true,
-		Certificates:             certificates,
-	}
-
-	srv := &http.Server{
-		Addr:    s.config.Address,
-		Handler: s.handler,
-		TLSConfig: cfg,
-	}
-
-	printLogo()
-	fmt.Printf("Running on HTTPS\n ⚡️ https://%s, serving '%s'\n\n", s.config.Address, s.config.Path)
-	fmt.Print("CTRL-C to stop the️ server\n")
-	return srv.ListenAndServeTLS("", "")
-}

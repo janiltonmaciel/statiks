@@ -1,10 +1,22 @@
 package lib_test
 
 import (
+	"flag"
 	"net/http"
 
 	check "gopkg.in/check.v1"
 )
+
+func (s *StatiksSuite) TestServerPathDefault(c *check.C) {
+	set := flag.NewFlagSet("test", 0)
+	set.String("host", "localhost", "")
+	set.String("port", "9080", "")
+	e := s.newHTTPTester(set)
+
+	resp := e.GET("/").Expect()
+	resp.Status(http.StatusOK)
+	resp.Body().Contains("server_test.go")
+}
 
 func (s *StatiksSuite) TestServerEnabledIndex(c *check.C) {
 	set := s.newFlagSet()
@@ -121,17 +133,14 @@ func (s *StatiksSuite) TestServerDisabledIncludeHidden(c *check.C) {
 }
 
 
-//func (s *StatiksSuite) TestServerEnabledCORS(c *check.C) {
-//	set := s.newFlagSet()
-//	set.Bool("cors", true, "")
-//	e := s.newHTTPTester(set)
-//
-//	//resp := e.GET("/").WithHeader("Accept-Encoding", "gzip").Expect()
-//	resp := e.OPTIONS("/").WithHeader("Access-Control-Request-Method", "*").Expect()
-//	fmt.Printf("Headers: %v\n", resp.Headers())
-//	resp.Status(http.StatusOK)
-//	//resp.Body().NotEmpty()
-//}
+func (s *StatiksSuite) TestServerEnabledCORS(c *check.C) {
+	set := s.newFlagSet()
+	set.Bool("cors", true, "")
+	e := s.newHTTPTester(set)
+
+	resp := e.OPTIONS("/").Expect()
+	resp.Status(http.StatusOK)
+}
 
 
 func (s *StatiksSuite) TestServerEnabledSSL(c *check.C) {
