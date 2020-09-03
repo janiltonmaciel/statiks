@@ -7,7 +7,9 @@ git:
   submodules: false
 
 go:
+  - "1.13"
   - "1.14"
+  - "1.15"
 
 env:
   - GOARCH=amd64
