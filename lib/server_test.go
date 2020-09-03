@@ -80,7 +80,6 @@ func (s *StatiksSuite) TestServerDisabledCache(c *check.C) {
 	resp.Header("Expires").Equal("0")
 }
 
-
 func (s *StatiksSuite) TestServerEnabledCompression(c *check.C) {
 	set := s.newFlagSet()
 	set.Bool("compression", true, "")
@@ -112,7 +111,6 @@ func (s *StatiksSuite) TestServerDisabledCompression2(c *check.C) {
 	resp.Header("Content-Encoding").Empty()
 }
 
-
 func (s *StatiksSuite) TestServerEnabledIncludeHidden(c *check.C) {
 	set := s.newFlagSet()
 	set.Bool("include-hidden", true, "")
@@ -132,7 +130,6 @@ func (s *StatiksSuite) TestServerDisabledIncludeHidden(c *check.C) {
 	resp.Status(http.StatusNotFound)
 }
 
-
 func (s *StatiksSuite) TestServerEnabledCORS(c *check.C) {
 	set := s.newFlagSet()
 	set.Bool("cors", true, "")
@@ -141,7 +138,6 @@ func (s *StatiksSuite) TestServerEnabledCORS(c *check.C) {
 	resp := e.OPTIONS("/").Expect()
 	resp.Status(http.StatusOK)
 }
-
 
 func (s *StatiksSuite) TestServerEnabledSSL(c *check.C) {
 	set := s.newFlagSet()
@@ -152,4 +148,3 @@ func (s *StatiksSuite) TestServerEnabledSSL(c *check.C) {
 	resp.Status(http.StatusOK)
 	resp.Body().NotEmpty()
 }
-

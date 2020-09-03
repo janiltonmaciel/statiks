@@ -96,4 +96,3 @@ func (s *Server) runHTTPS() error {
 	fmt.Print("CTRL-C to stop the️ server\n")
 	return http.ListenAndServeTLS(s.config.Address, s.config.Cert, s.config.Key, s.handler)
 }
-

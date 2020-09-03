@@ -13,7 +13,6 @@ import (
 )
 
 type StatiksSuite struct {
-	e *httpexpect.Expect
 	t *testing.T
 }
 
@@ -26,7 +25,6 @@ func Test(t *testing.T) {
 }
 
 var _ = check.Suite(sSuite)
-
 
 func (s *StatiksSuite) newHTTPTester(set *flag.FlagSet) *httpexpect.Expect {
 	ctx := cli.NewContext(nil, set, nil)
@@ -45,7 +43,8 @@ func (s *StatiksSuite) newHTTPTester(set *flag.FlagSet) *httpexpect.Expect {
 	return e
 }
 
-func (s *StatiksSuite) newFlagSet(paths ...string) *flag.FlagSet{
+// nolint
+func (s *StatiksSuite) newFlagSet(paths ...string) *flag.FlagSet {
 	set := flag.NewFlagSet("test", 0)
 	set.String("host", "localhost", "")
 	set.String("port", "9080", "")
@@ -53,7 +52,7 @@ func (s *StatiksSuite) newFlagSet(paths ...string) *flag.FlagSet{
 	if len(paths) == 0 {
 		paths = []string{".."}
 	}
-	if err := set.Parse(paths); err != nil{
+	if err := set.Parse(paths); err != nil {
 		s.t.Error(err)
 	}
 	return set

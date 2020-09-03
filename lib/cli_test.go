@@ -2,6 +2,7 @@ package lib_test
 
 import (
 	"flag"
+
 	"github.com/janiltonmaciel/statiks/lib"
 	"github.com/urfave/cli/v2"
 	check "gopkg.in/check.v1"

@@ -3,8 +3,8 @@
 package lib
 
 import (
-	"syscall"
 	"path/filepath"
+	"syscall"
 )
 
 func HideFile(path string) bool {
@@ -18,5 +18,5 @@ func HideFile(path string) bool {
 	if e != nil {
 		return false
 	}
-	return attrs & syscall.FILE_ATTRIBUTE_HIDDEN != 0
+	return attrs&syscall.FILE_ATTRIBUTE_HIDDEN != 0
 }
