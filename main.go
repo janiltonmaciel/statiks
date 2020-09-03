@@ -1,7 +1,8 @@
 package main
 
 import (
-	golog "log"
+	"log"
+	"os"
 
 	"github.com/janiltonmaciel/statiks/cmd"
 )
@@ -13,7 +14,8 @@ var (
 )
 
 func main() {
-	if err := cmd.Execute(version, commit, date); err != nil {
-		golog.Fatal(err)
+	app := cmd.CreateApp(version, commit, date)
+	if err := app.Run(os.Args); err != nil {
+		log.Fatal(err)
 	}
 }

@@ -9,5 +9,5 @@ require (
 	github.com/rs/cors v1.7.0
 	github.com/urfave/cli/v2 v2.2.0
 	github.com/urfave/negroni v1.0.0
-	gopkg.in/check.v1 v1.0.0-20200227125254-8fa46927fb4f
+	gopkg.in/check.v1 v1.0.0-20200902074654-038fdea0a05b
 )

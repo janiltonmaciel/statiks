@@ -1,16 +1,10 @@
-package lib
-
-import (
-	"fmt"
-
-	"github.com/urfave/cli/v2"
-)
+package cmd
 
 // AppHelpTemplate is the text template for the Default help topic.
 // cli.go uses text/template to render templates. You can
 // render custom help text by setting this variable.
 // https://github.com/urfave/cli/blob/master/help.go
-var AppHelpTemplate = `NAME:
+var appHelpTemplate = `NAME:
    {{.Name}}{{if .Usage}} - {{.Usage}}{{end}}
 
 USAGE:
@@ -69,23 +63,3 @@ AUTHOR{{with $length := len .Authors}}{{if ne 1 $length}}S{{end}}{{end}}:
    {{end}}{{$author}}{{end}}
 {{end}}
 `
-
-func VersionPrinter(commit, date string) func(c *cli.Context) {
-	return func(c *cli.Context) {
-		printLogo()
-		fmt.Fprintf(c.App.Writer, "version: %s\n", c.App.Version)
-		fmt.Fprintf(c.App.Writer, "commit: %s\n", commit)
-		fmt.Fprintf(c.App.Writer, "date: %s\n", date)
-		fmt.Fprintf(c.App.Writer, "author: %s\n", c.App.Authors[0].Name)
-	}
-}
-
-func printLogo() {
-	fmt.Println(`
-     _______.___________.    ___   .___________. __   __  ___      _______.
-    /       |           |   /   \  |           ||  | |  |/  /     /       |
-   |   (----'---|  |----'  /  ^  \ '---|  |----'|  | |  '  /     |   (----'
-    \   \       |  |      /  /_\  \    |  |     |  | |    <       \   \
-.----)   |      |  |     /  _____  \   |  |     |  | |  .  \  .----)   |
-|_______/       |__|    /__/     \__\  |__|     |__| |__|\__\ |_______/`)
-}

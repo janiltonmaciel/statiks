@@ -84,15 +84,25 @@ func (s *Server) GetHandler() http.Handler {
 }
 
 func (s *Server) runHTTP() error {
-	printLogo()
+	s.log()
 	fmt.Printf("\nRunning on HTTP\n ⚡️ http://%s, serving '%s'\n\n", s.config.Address, s.config.Path)
 	fmt.Print("CTRL-C to stop the️ server\n")
 	return http.ListenAndServe(s.config.Address, s.handler)
 }
 
 func (s *Server) runHTTPS() error {
-	printLogo()
+	s.log()
 	fmt.Printf("\nRunning on HTTPS\n ⚡️ https://%s, serving '%s'\n\n", s.config.Address, s.config.Path)
 	fmt.Print("CTRL-C to stop the️ server\n")
 	return http.ListenAndServeTLS(s.config.Address, s.config.Cert, s.config.Key, s.handler)
+}
+
+func (s *Server) log() {
+	fmt.Println(`
+     _______.___________.    ___   .___________. __   __  ___      _______.
+    /       |           |   /   \  |           ||  | |  |/  /     /       |
+   |   (----'---|  |----'  /  ^  \ '---|  |----'|  | |  '  /     |   (----'
+    \   \       |  |      /  /_\  \    |  |     |  | |    <       \   \
+.----)   |      |  |     /  _____  \   |  |     |  | |  .  \  .----)   |
+|_______/       |__|    /__/     \__\  |__|     |__| |__|\__\ |_______/`)
 }

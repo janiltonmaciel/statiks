@@ -1,17 +1,16 @@
 package cmd
 
 import (
-	"os"
+	"fmt"
 
 	"github.com/janiltonmaciel/statiks/lib"
 	"github.com/urfave/cli/v2"
 )
 
-var author = "Janilton Maciel <janilton@gmail.com>"
-
-func Execute(version, commit, date string) error {
-	cli.AppHelpTemplate = lib.AppHelpTemplate
-	cli.VersionPrinter = lib.VersionPrinter(commit, date)
+// CreateApp.
+func CreateApp(version, commit, date string) *cli.App {
+	cli.AppHelpTemplate = appHelpTemplate
+	cli.VersionPrinter = versionPrinter(commit, date)
 	cli.HelpFlag = &cli.BoolFlag{
 		Name:  "help",
 		Usage: "show help",
@@ -25,7 +24,7 @@ func Execute(version, commit, date string) error {
 	app := createCliApp(
 		version,
 	)
-	return app.Run(os.Args)
+	return app
 }
 
 func createCliApp(version string) *cli.App {
@@ -33,7 +32,7 @@ func createCliApp(version string) *cli.App {
 	app.Name = "statiks"
 	app.Usage = "fast, zero-configuration, static HTTP filer server."
 	app.UsageText = "statiks [options] <path>"
-	app.Authors = []*cli.Author{{Name: author}}
+	app.Authors = []*cli.Author{{Name: "Janilton Maciel", Email: "janilton@gmail.com"}}
 	app.Version = version
 	app.Flags = createFlags()
 	app.Action = func(c *cli.Context) error {
@@ -109,4 +108,13 @@ func createFlags() []cli.Flag {
 		},
 	}
 	return flags
+}
+
+func versionPrinter(commit, date string) func(c *cli.Context) {
+	return func(c *cli.Context) {
+		fmt.Fprintf(c.App.Writer, "version: %s\n", c.App.Version)
+		fmt.Fprintf(c.App.Writer, "commit: %s\n", commit)
+		fmt.Fprintf(c.App.Writer, "date: %s\n", date)
+		fmt.Fprintf(c.App.Writer, "author: %s\n", c.App.Authors[0].Name)
+	}
 }
