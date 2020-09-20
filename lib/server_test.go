@@ -4,6 +4,8 @@ import (
 	"flag"
 	"net/http"
 
+	"github.com/janiltonmaciel/statiks/lib"
+	"github.com/urfave/cli/v2"
 	check "gopkg.in/check.v1"
 )
 
@@ -20,11 +22,29 @@ func (s *StatiksSuite) TestServerPathDefault(c *check.C) {
 
 func (s *StatiksSuite) TestServerEnabledIndex(c *check.C) {
 	set := s.newFlagSet()
+	set.Bool("no-index", false, "")
 	e := s.newHTTPTester(set)
 
 	resp := e.GET("/").Expect()
 	resp.Status(http.StatusOK)
 	resp.Body().Contains("README.md")
+
+	resp = e.GET("/").Expect()
+	resp.Status(http.StatusOK)
+	resp.Body().Contains("README.md")
+
+	resp = e.GET("index.html").Expect()
+	resp.Status(http.StatusOK)
+	resp.Body().Contains("README.md")
+
+	resp = e.GET("/index.html").Expect()
+	resp.Status(http.StatusOK)
+	resp.Body().Contains("README.md")
+
+	resp = e.GET("/cmd/").Expect()
+	resp.Status(http.StatusOK)
+	resp.Body().Contains("root.go")
+
 }
 
 func (s *StatiksSuite) TestServerDisabledIndex(c *check.C) {
@@ -147,4 +167,53 @@ func (s *StatiksSuite) TestServerEnabledSSL(c *check.C) {
 	resp := e.GET("/").Expect()
 	resp.Status(http.StatusOK)
 	resp.Body().NotEmpty()
+}
+
+func (s *StatiksSuite) TestServerRun(c *check.C) {
+	set := s.newFlagSet()
+	ctx := cli.NewContext(nil, set, nil)
+	config := lib.NewConfig(ctx)
+	config.Address = "localhost:invalid"
+	server := lib.NewServer(config)
+	err := server.Run()
+	c.Assert(err, check.NotNil)
+
+	config.SSL = true
+	config.Address = "localhost:invalid"
+	server = lib.NewServer(config)
+	err = server.Run()
+	c.Assert(err, check.NotNil)
+}
+
+type FakeResponse struct {
+	headers http.Header
+	body    []byte
+	status  int
+}
+
+func (r *FakeResponse) Header() http.Header {
+	return r.headers
+}
+
+func (r *FakeResponse) Write(body []byte) (int, error) {
+	r.body = body
+	return len(body), nil
+}
+
+func (r *FakeResponse) WriteHeader(status int) {
+	r.status = status
+}
+
+func (s *StatiksSuite) TestWriteNotModified(c *check.C) {
+	fr := &FakeResponse{
+		headers: map[string][]string{
+			"Content-Type":   {"json"},
+			"Content-Length": {"100"},
+			"Etag":           {"Etagval"},
+			"Last-Modified":  {"Lastval"},
+		},
+	}
+	lib.WriteNotModified(fr)
+	c.Assert(fr.Header(), check.HasLen, 1)
+	c.Assert(fr.Header()["Etag"][0], check.Equals, "Etagval")
 }

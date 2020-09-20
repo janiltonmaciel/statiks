@@ -91,7 +91,8 @@ release: git-tag
 	echo "Release - OK"
 
 push-release:
-	goreleaser release --rm-dist
+	export GITHUB_TOKEN=$(GITHUB_TOKEN); \
+	goreleaser release --rm-dist --skip-validate
 
 ## Prints this help
 help:

@@ -28,3 +28,24 @@ func (s *StatiksSuite) TestVersionPrinter(c *check.C) {
 	vp := cmd.VersionPrinter(commit, date)
 	vp(ctx)
 }
+
+func (s *StatiksSuite) TestRun(c *check.C) {
+	version := "v0.1"
+	commit := "da3c509"
+	date := "2020-09-03T14:45:36Z"
+	err := cmd.Run(version, commit, date)
+	c.Assert(err, check.NotNil)
+}
+
+func (s *StatiksSuite) TestAction(c *check.C) {
+	version := "v0.1"
+	app := cmd.NewApp(version)
+
+	set := flag.NewFlagSet("test", 0)
+	set.String("host", "localhost2332", "")
+
+	ctx := cli.NewContext(app, set, nil)
+
+	err := app.Action(ctx)
+	c.Assert(err, check.NotNil)
+}
