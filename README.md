@@ -2,9 +2,10 @@
 Fast, zero-configuration, static HTTP filer server.
 Like Python's `SimpleHTTPServer` but scalable.
 
-[![Build Status](https://travis-ci.org/janiltonmaciel/statiks.svg?branch=master)](https://travis-ci.org/janiltonmaciel/statiks)
-[![Go Report Card](https://goreportcard.com/badge/github.com/janiltonmaciel/statiks)](https://goreportcard.com/report/github.com/janiltonmaciel/statiks)
 [![GitHub Releases](https://img.shields.io/github/release/janiltonmaciel/statiks.svg)](https://github.com/janiltonmaciel/statiks/releases)
+[![GoDoc](https://godoc.org/github.com/janiltonmaciel/statiks?status.svg)](https://pkg.go.dev/github.com/janiltonmaciel/statiks?tab=overview)
+[![Go Report Card](https://goreportcard.com/badge/github.com/janiltonmaciel/statiks)](https://goreportcard.com/report/github.com/janiltonmaciel/statiks)
+[![Build Status](https://travis-ci.org/janiltonmaciel/statiks.svg?branch=master)](https://travis-ci.org/janiltonmaciel/statiks)
 
 ## Features
 

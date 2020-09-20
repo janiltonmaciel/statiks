@@ -90,6 +90,8 @@ release: git-tag
 	git push origin master; \
 	echo "Release - OK"
 
+push-release:
+	goreleaser release --rm-dist
 
 ## Prints this help
 help:

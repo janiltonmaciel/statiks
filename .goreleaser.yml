@@ -1,5 +1,3 @@
-# goreleaser.yml
-# Build customization
 project_name: statiks
 
 builds:
@@ -14,6 +12,8 @@ builds:
       - linux
     ignore:
       - goarch: 386
+  ldflags:
+    - -X main.version={{.Version}} -w -s
 
 release:
   github:
@@ -45,20 +45,10 @@ brews:
 
 dockers:
   -
-    # Templates of the Docker image names.
     image_templates:
     - "janilton/statiks:latest"
     - "janilton/statiks:{{ .Major }}.{{ .Minor }}"
 
-    # If your Dockerfile copies files other than the binary itself,
-    # you should list them here as well.
-    # Note that goreleaser will create the same structure inside the temporary
-    # folder, so if you add `foo/bar.json` here, on your Dockerfile you can
-    # `COPY foo/bar.json /whatever.json`.
-    # Also note that the paths here are relative to the folder in which
-    # goreleaser is being run.
-    # This field does not support wildcards, you can add an entire folder here
-    # and use wildcards when you `COPY`/`ADD` in your Dockerfile.
     extra_files:
       - go.mod
       - go.sum
@@ -66,3 +56,13 @@ dockers:
       - main.go
       - cmd
       - lib
+
+changelog:
+  sort: asc
+  filters:
+    exclude:
+    - '^Update README.md with release'
+    - '^docs:'
+    - '^test:'
+    - Merge pull request
+    - Merge branch
