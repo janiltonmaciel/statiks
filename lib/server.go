@@ -31,14 +31,14 @@ func NewServer(config Config) *Server {
 
 	var handler http.Handler
 	if config.HasCache {
-		handler = CacheHandler(fs, config.Cache)
+		handler = cacheHandler(fs, config.Cache)
 	} else {
-		handler = NoCacheHandler(fs)
+		handler = noCacheHandler(fs)
 	}
 
 	// add delay
 	if config.Delay > 0 {
-		handler = DelayHandler(handler, config.Delay)
+		handler = delayHandler(handler, config.Delay)
 	}
 
 	mux := http.NewServeMux()
@@ -49,7 +49,7 @@ func NewServer(config Config) *Server {
 
 	// add middleware logger
 	if !config.Quiet {
-		n.Use(NewLogger(projectName))
+		n.Use(newLogger(projectName))
 	}
 
 	// add middleware gzip

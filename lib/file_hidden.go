@@ -7,6 +7,6 @@ import (
 	"strings"
 )
 
-func HideFile(path string) bool {
+func hideFile(path string) bool {
 	return strings.HasPrefix(filepath.Base(path), ".")
 }

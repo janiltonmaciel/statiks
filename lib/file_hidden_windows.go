@@ -7,7 +7,7 @@ import (
 	"syscall"
 )
 
-func HideFile(path string) bool {
+func hideFile(path string) bool {
 	base := filepath.Base(path)
 	filenameW, err := syscall.UTF16PtrFromString(base)
 	if err != nil {

@@ -2,13 +2,14 @@ package cmd
 
 import (
 	"fmt"
+	"os"
 
 	"github.com/janiltonmaciel/statiks/lib"
 	"github.com/urfave/cli/v2"
 )
 
-// CreateApp.
-func CreateApp(version, commit, date string) *cli.App {
+// Run cli.
+func Run(version, commit, date string) error {
 	cli.AppHelpTemplate = appHelpTemplate
 	cli.VersionPrinter = versionPrinter(commit, date)
 	cli.HelpFlag = &cli.BoolFlag{
@@ -21,18 +22,23 @@ func CreateApp(version, commit, date string) *cli.App {
 		Usage:   "print the version",
 	}
 
-	app := createCliApp(
+	app := newApp(
 		version,
 	)
-	return app
+	return app.Run(os.Args)
 }
 
-func createCliApp(version string) *cli.App {
+func newApp(version string) *cli.App {
 	app := cli.NewApp()
 	app.Name = "statiks"
 	app.Usage = "fast, zero-configuration, static HTTP filer server."
 	app.UsageText = "statiks [options] <path>"
-	app.Authors = []*cli.Author{{Name: "Janilton Maciel", Email: "janilton@gmail.com"}}
+	app.Authors = []*cli.Author{
+		{
+			Name:  "Janilton Maciel",
+			Email: "janilton@gmail.com",
+		},
+	}
 	app.Version = version
 	app.Flags = createFlags()
 	app.Action = func(c *cli.Context) error {

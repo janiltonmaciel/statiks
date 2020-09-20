@@ -13,7 +13,7 @@ var noCacheHeaders = map[string]string{
 	"Expires":         "0",
 }
 
-func NoCacheHandler(h http.Handler) http.Handler {
+func noCacheHandler(h http.Handler) http.Handler {
 	fn := func(w http.ResponseWriter, r *http.Request) {
 		for k, v := range noCacheHeaders {
 			w.Header().Set(k, v)
@@ -24,7 +24,7 @@ func NoCacheHandler(h http.Handler) http.Handler {
 	return http.HandlerFunc(fn)
 }
 
-func CacheHandler(h http.Handler, cache int) http.Handler {
+func cacheHandler(h http.Handler, cache int) http.Handler {
 	v := fmt.Sprintf("max-age=%d", cache)
 	fn := func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Cache-Control", v)
@@ -34,7 +34,7 @@ func CacheHandler(h http.Handler, cache int) http.Handler {
 	return http.HandlerFunc(fn)
 }
 
-func DelayHandler(h http.Handler, delay time.Duration) http.Handler {
+func delayHandler(h http.Handler, delay time.Duration) http.Handler {
 	fn := func(w http.ResponseWriter, r *http.Request) {
 		time.Sleep(delay)
 		w.Header().Set("X-Delay", delay.String())

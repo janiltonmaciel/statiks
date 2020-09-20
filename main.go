@@ -2,7 +2,6 @@ package main
 
 import (
 	"log"
-	"os"
 
 	"github.com/janiltonmaciel/statiks/cmd"
 )
@@ -14,8 +13,7 @@ var (
 )
 
 func main() {
-	app := cmd.CreateApp(version, commit, date)
-	if err := app.Run(os.Args); err != nil {
+	if err := cmd.Run(version, commit, date); err != nil {
 		log.Fatal(err)
 	}
 }

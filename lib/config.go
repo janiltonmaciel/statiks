@@ -33,6 +33,7 @@ var hostReplacer = strings.NewReplacer(
 	"https://", "",
 )
 
+// Create New Config.
 func NewConfig(c *cli.Context) (config Config) {
 	config.Host = getHostAddress(c)
 	config.Path = getPath(c)

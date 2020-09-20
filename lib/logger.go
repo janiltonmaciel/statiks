@@ -13,17 +13,17 @@ import (
 
 const requestMsg = "completed request"
 
-var logger = golog.New(os.Stdout, "", golog.Ldate|golog.Ltime|golog.Lmicroseconds)
+var logg = golog.New(os.Stdout, "", golog.Ldate|golog.Ltime|golog.Lmicroseconds)
 
-type Logger struct {
+type logger struct {
 	AppName string
 }
 
-func NewLogger(appName string) *Logger {
-	return &Logger{AppName: appName}
+func newLogger(appName string) *logger {
+	return &logger{AppName: appName}
 }
 
-func (l *Logger) ServeHTTP(rw http.ResponseWriter, r *http.Request, next http.HandlerFunc) {
+func (l *logger) ServeHTTP(rw http.ResponseWriter, r *http.Request, next http.HandlerFunc) {
 	start := time.Now()
 	next(rw, r)
 	elapsed := time.Since(start)
@@ -45,5 +45,5 @@ func (l *Logger) ServeHTTP(rw http.ResponseWriter, r *http.Request, next http.Ha
 	buf.WriteString(elapsed.String())
 	buf.WriteString(" cachecontrol: ")
 	buf.WriteString(rw.Header().Get("Cache-Control"))
-	logger.Printf("[%s] %s", l.AppName, buf.String())
+	logg.Printf("[%s] %s", l.AppName, buf.String())
 }
