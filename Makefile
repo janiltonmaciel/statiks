@@ -28,13 +28,13 @@ runs:
 
 ## Runs the project unit tests
 test:
-	@go test -timeout 10s  -v -covermode atomic -cover -coverprofile coverage.txt $(SOURCE_FILES)
+	@go test -timeout 10s  -v -covermode atomic -cover -coverprofile coverage.out $(SOURCE_FILES)
 	@go vet . 2>&1 | grep -v '^vendor\/' | grep -v '^exit\ status\ 1' || true
 
 ## Run all the tests and opens the coverage report
 test-cover: test
-	go tool cover -html=coverage.txt
-	@rm coverage.txt 2>/dev/null || true
+	go tool cover -html=coverage.out
+	@rm coverage.out 2>/dev/null || true
 
 ## Run all the tests and code checks
 test-ci: lint test

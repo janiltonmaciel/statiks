@@ -9,3 +9,4 @@ dist/
 gin-bin
 
 coverage.txt
+coverage.out
