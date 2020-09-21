@@ -12,8 +12,6 @@ builds:
       - linux
     ignore:
       - goarch: 386
-    ldflags:
-      - -X main.version={{.Version}} -w -s
 
 release:
   github:
