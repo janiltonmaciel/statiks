@@ -12,11 +12,13 @@ import (
 
 var projectName = "statiks"
 
+// Server implements the static http server.
 type Server struct {
 	config  Config
 	handler http.Handler
 }
 
+// NewServer return server implements the static http server.
 func NewServer(config Config) *Server {
 	docroot, err := filepath.Abs(config.Path)
 	if err != nil {
@@ -72,6 +74,7 @@ func NewServer(config Config) *Server {
 	return s
 }
 
+// Run command cli.
 func (s *Server) Run() error {
 	if s.config.SSL {
 		return s.runHTTPS()
@@ -79,6 +82,7 @@ func (s *Server) Run() error {
 	return s.runHTTP()
 }
 
+// GetHandler http handler.
 func (s *Server) GetHandler() http.Handler {
 	return s.handler
 }

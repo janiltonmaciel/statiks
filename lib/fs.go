@@ -153,7 +153,7 @@ func serveFile(w http.ResponseWriter, r *http.Request, fh *fileHandler, name str
 	http.ServeContent(w, r, d.Name(), d.ModTime(), f)
 }
 
-func dirList(w http.ResponseWriter, r *http.Request, f http.File, config Config) {
+func dirList(w http.ResponseWriter, _ *http.Request, f http.File, config Config) {
 	dirs, err := f.Readdir(-1)
 	if err != nil {
 		http.Error(w, "Error reading directory", http.StatusInternalServerError)

@@ -18,7 +18,7 @@ func (s *StatiksSuite) TestApp(c *check.C) {
 }
 
 func (s *StatiksSuite) TestVersionPrinter(c *check.C) {
-	version := "v0.1"
+	version := "v0.2"
 	app := cmd.NewApp(version)
 
 	commit := "da3c509"
@@ -30,7 +30,7 @@ func (s *StatiksSuite) TestVersionPrinter(c *check.C) {
 }
 
 func (s *StatiksSuite) TestRun(c *check.C) {
-	version := "v0.1"
+	version := "v0.3"
 	commit := "da3c509"
 	date := "2020-09-03T14:45:36Z"
 	err := cmd.Run(version, commit, date)
@@ -38,7 +38,7 @@ func (s *StatiksSuite) TestRun(c *check.C) {
 }
 
 func (s *StatiksSuite) TestAction(c *check.C) {
-	version := "v0.1"
+	version := "v0.4"
 	app := cmd.NewApp(version)
 
 	set := flag.NewFlagSet("test", 0)

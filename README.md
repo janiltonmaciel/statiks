@@ -62,6 +62,7 @@ OPTIONS:
   --cert value            path to the ssl cert file (default: "cert.pem")
   --key value             path to the ssl key file (default: "key.pem")
   --help                  show help (default: false)
+  --version, -v           print the version (default: false)
 ```
 
 > `<path>` defaults to `.` (relative path to the current directory)

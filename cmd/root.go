@@ -121,6 +121,6 @@ func versionPrinter(commit, date string) func(c *cli.Context) {
 		fmt.Fprintf(c.App.Writer, "version: %s\n", c.App.Version)
 		fmt.Fprintf(c.App.Writer, "commit: %s\n", commit)
 		fmt.Fprintf(c.App.Writer, "date: %s\n", date)
-		fmt.Fprintf(c.App.Writer, "author: %s\n", c.App.Authors[0].Name)
+		fmt.Fprintf(c.App.Writer, "author: %s <%s>\n", c.App.Authors[0].Name, c.App.Authors[0].Email)
 	}
 }

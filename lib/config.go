@@ -8,6 +8,7 @@ import (
 	"github.com/urfave/cli/v2"
 )
 
+// Config configure http server command.
 type Config struct {
 	Address       string
 	Path          string
@@ -33,7 +34,7 @@ var hostReplacer = strings.NewReplacer(
 	"https://", "",
 )
 
-// Create New Config.
+// NewConfig create config http server command.
 func NewConfig(c *cli.Context) (config Config) {
 	config.Host = getHostAddress(c)
 	config.Path = getPath(c)

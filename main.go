@@ -7,7 +7,7 @@ import (
 )
 
 var (
-	version string
+	version = "0.0.0"
 	commit  string
 	date    string
 )
