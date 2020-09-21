@@ -4,7 +4,6 @@ package lib
 
 import (
 	"fmt"
-	"log"
 	"net/http"
 	"net/url"
 	"os"
@@ -157,7 +156,6 @@ func serveFile(w http.ResponseWriter, r *http.Request, fh *fileHandler, name str
 func dirList(w http.ResponseWriter, r *http.Request, f http.File, config Config) {
 	dirs, err := f.Readdir(-1)
 	if err != nil {
-		logf(r, "http: error reading directory: %v", err)
 		http.Error(w, "Error reading directory", http.StatusInternalServerError)
 		return
 	}
@@ -257,16 +255,4 @@ func writeNotModified(w http.ResponseWriter) {
 		delete(h, "Last-Modified")
 	}
 	w.WriteHeader(http.StatusNotModified)
-}
-
-// logf prints to the ErrorLog of the *Server associated with request r
-// via ServerContextKey. If there's no associated server, or if ErrorLog
-// is nil, logging is done via the log package's standard logger.
-func logf(r *http.Request, format string, args ...interface{}) {
-	s, _ := r.Context().Value(http.ServerContextKey).(*http.Server)
-	if s != nil && s.ErrorLog != nil {
-		s.ErrorLog.Printf(format, args...)
-	} else {
-		log.Printf(format, args...)
-	}
 }
