@@ -4,11 +4,11 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/janiltonmaciel/statiks/lib"
+	statiks "github.com/janiltonmaciel/statiks/http"
 	"github.com/urfave/cli/v2"
 )
 
-// Run cli.
+// Run CLI application.
 func Run(version, commit, date string) error {
 	cli.AppHelpTemplate = appHelpTemplate
 	cli.VersionPrinter = versionPrinter(commit, date)
@@ -33,21 +33,25 @@ func newApp(version string) *cli.App {
 	app.Name = "statiks"
 	app.Usage = "fast, zero-configuration, static HTTP filer server."
 	app.UsageText = "statiks [options] <path>"
-	app.Authors = []*cli.Author{
+	app.Version = version
+	app.Authors = createAuthors()
+	app.Flags = createFlags()
+	app.Action = func(c *cli.Context) error {
+		config := statiks.NewConfig(c)
+		server := statiks.NewServer(config)
+		return server.Run()
+	}
+
+	return app
+}
+
+func createAuthors() []*cli.Author {
+	return []*cli.Author{
 		{
 			Name:  "Janilton Maciel",
 			Email: "janilton@gmail.com",
 		},
 	}
-	app.Version = version
-	app.Flags = createFlags()
-	app.Action = func(c *cli.Context) error {
-		config := lib.NewConfig(c)
-		server := lib.NewServer(config)
-		return server.Run()
-	}
-
-	return app
 }
 
 // nolint

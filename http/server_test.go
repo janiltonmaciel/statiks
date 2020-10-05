@@ -4,7 +4,7 @@ import (
 	"flag"
 	"net/http"
 
-	"github.com/janiltonmaciel/statiks/lib"
+	statiks "github.com/janiltonmaciel/statiks/http"
 	"github.com/urfave/cli/v2"
 	check "gopkg.in/check.v1"
 )
@@ -171,15 +171,15 @@ func (s *StatiksSuite) TestServerEnabledSSL(c *check.C) {
 func (s *StatiksSuite) TestServerRun(c *check.C) {
 	set := s.newFlagSet()
 	ctx := cli.NewContext(nil, set, nil)
-	config := lib.NewConfig(ctx)
+	config := statiks.NewConfig(ctx)
 	config.Address = "localhost:invalid"
-	server := lib.NewServer(config)
+	server := statiks.NewServer(config)
 	err := server.Run()
 	c.Assert(err, check.NotNil)
 
 	config.SSL = true
 	config.Address = "localhost:invalid"
-	server = lib.NewServer(config)
+	server = statiks.NewServer(config)
 	err = server.Run()
 	c.Assert(err, check.NotNil)
 }

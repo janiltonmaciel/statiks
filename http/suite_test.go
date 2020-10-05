@@ -7,7 +7,7 @@ import (
 	"testing"
 
 	"github.com/gavv/httpexpect/v2"
-	"github.com/janiltonmaciel/statiks/lib"
+	statiks "github.com/janiltonmaciel/statiks/http"
 	"github.com/urfave/cli/v2"
 	check "gopkg.in/check.v1"
 )
@@ -28,8 +28,8 @@ var _ = check.Suite(sSuite)
 
 func (s *StatiksSuite) newHTTPTester(set *flag.FlagSet) *httpexpect.Expect {
 	ctx := cli.NewContext(nil, set, nil)
-	config := lib.NewConfig(ctx)
-	server := lib.NewServer(config)
+	config := statiks.NewConfig(ctx)
+	server := statiks.NewServer(config)
 	baseURL := fmt.Sprintf("http://%s", config.Address)
 	handler := server.GetHandler()
 	e := httpexpect.WithConfig(httpexpect.Config{

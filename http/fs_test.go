@@ -5,7 +5,7 @@ import (
 	"os"
 	"time"
 
-	"github.com/janiltonmaciel/statiks/lib"
+	statiks "github.com/janiltonmaciel/statiks/http"
 	check "gopkg.in/check.v1"
 )
 
@@ -37,7 +37,7 @@ func (s *StatiksSuite) TestWriteNotModified(c *check.C) {
 			"Last-Modified":  {"Lastval"},
 		},
 	}
-	lib.WriteNotModified(fr)
+	statiks.WriteNotModified(fr)
 	c.Assert(fr.Header(), check.HasLen, 1)
 	c.Assert(fr.Header()["Etag"][0], check.Equals, "Etagval")
 }
@@ -54,7 +54,7 @@ func (s *StatiksSuite) TestToHTTPError(c *check.C) {
 	}
 
 	for _, tc := range tests {
-		msg, status := lib.ToHTTPError(tc.input)
+		msg, status := statiks.ToHTTPError(tc.input)
 		c.Assert(msg, check.Equals, tc.wantMessage)
 		c.Assert(status, check.Equals, tc.wantStatus)
 	}
@@ -73,12 +73,12 @@ func (s *StatiksSuite) TestCheckIfModifiedSince(c *check.C) {
 	}
 
 	for _, tc := range tests {
-		config := lib.Config{}
+		config := statiks.Config{}
 		req := &http.Request{
 			Method: tc.inputMethod,
 			Header: map[string][]string{"If-Modified-Since": {tc.inputHeaderModified}},
 		}
-		result := lib.CheckIfModifiedSince(req, tc.inputModTime, config)
+		result := statiks.CheckIfModifiedSince(req, tc.inputModTime, config)
 		c.Assert(int(result), check.Equals, tc.want)
 	}
 }

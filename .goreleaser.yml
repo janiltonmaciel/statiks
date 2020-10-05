@@ -53,7 +53,7 @@ dockers:
       - README.md
       - main.go
       - cmd
-      - lib
+      - http
 
 changelog:
   sort: asc

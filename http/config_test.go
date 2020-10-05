@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/janiltonmaciel/statiks/lib"
+	statiks "github.com/janiltonmaciel/statiks/http"
 	"github.com/urfave/cli/v2"
 	check "gopkg.in/check.v1"
 )
@@ -28,7 +28,7 @@ func (s *StatiksSuite) TestConfig(c *check.C) {
 	c.Assert(err, check.IsNil)
 
 	ctx := cli.NewContext(nil, set, nil)
-	config := lib.NewConfig(ctx)
+	config := statiks.NewConfig(ctx)
 
 	c.Assert(config.Host, check.Equals, "localhost")
 	c.Assert(config.Port, check.Equals, "1080")

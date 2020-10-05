@@ -5,7 +5,7 @@ import (
 	"net/http/httptest"
 	"time"
 
-	"github.com/janiltonmaciel/statiks/lib"
+	statiks "github.com/janiltonmaciel/statiks/http"
 	check "gopkg.in/check.v1"
 )
 
@@ -20,7 +20,7 @@ func (s *StatiksSuite) TestNoCacheHandler(c *check.C) {
 	testHandler := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {})
 	w := httptest.NewRecorder()
 
-	handler := lib.NoCacheHandler(testHandler)
+	handler := statiks.NoCacheHandler(testHandler)
 	handler.ServeHTTP(w, nil)
 
 	for k, v := range noCacheHeaders {
@@ -53,7 +53,7 @@ func (s *StatiksSuite) TestCacheHandler(c *check.C) {
 
 	for _, tt := range tests {
 		w := httptest.NewRecorder()
-		handler := lib.CacheHandler(tt.args.h, tt.args.cache)
+		handler := statiks.CacheHandler(tt.args.h, tt.args.cache)
 		handler.ServeHTTP(w, nil)
 		c.Assert(w.Header().Get("Cache-Control"), check.Equals, tt.want)
 	}
@@ -63,7 +63,7 @@ func (s *StatiksSuite) TestAddDelayHandler(c *check.C) {
 	testHandler := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {})
 	w := httptest.NewRecorder()
 
-	handler := lib.DelayHandler(testHandler, 100*time.Millisecond)
+	handler := statiks.DelayHandler(testHandler, 100*time.Millisecond)
 	handler.ServeHTTP(w, nil)
 
 	c.Assert(w.Header().Get("X-Delay"), check.Equals, "100ms")

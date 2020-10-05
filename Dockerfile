@@ -12,7 +12,7 @@ WORKDIR ${BUILD_DIR}
 
 COPY go.* *.go *.md ./
 COPY ./cmd ./cmd/
-COPY ./lib ./lib/
+COPY ./http ./http/
 
 RUN apk update && apk add --no-cache ca-certificates make bash git && update-ca-certificates
 ENV CGO_ENABLED=0 GO111MODULE=on

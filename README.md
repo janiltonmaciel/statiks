@@ -68,28 +68,31 @@ OPTIONS:
 > `<path>` defaults to `.` (relative path to the current directory)
 
 ## Examples
-  - start server at http://0.0.0.0:9000 serving "." current directory
+
+  * start server at http://0.0.0.0:9000 serving "." current directory
+
 ```bash
 statiks -port 9000
 ```
 
-  - start server at http://0.0.0.0:9080 serving "/home" with CORS
+  * start server at http://0.0.0.0:9080 serving "/home" with CORS
+
 ```bash
 statiks --cors /home
 ```
 
-  - start server at http://192.168.1.100:9080 serving "/tmp" with gzip compression
+  * start server at http://192.168.1.100:9080 serving "/tmp" with gzip compression
 ```bash
 statiks --host 192.168.1.100 --compression /tmp
 ```
 
-  - start server at https://0.0.0.0:9080 serving "." with HTTPS
+  * start server at https://0.0.0.0:9080 serving "." with HTTPS
 
 ```bash
 statiks --ssl --cert cert.pem --key key.pem
 ```
 
-  - start server at http://0.0.0.0:9080 serving "/tmp" with delay response 100ms
+  * start server at http://0.0.0.0:9080 serving "/tmp" with delay response 100ms
 
 ```bash
 statiks --add-delay 100 /tmp

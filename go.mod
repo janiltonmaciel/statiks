@@ -1,6 +1,6 @@
 module github.com/janiltonmaciel/statiks
 
-go 1.14
+go 1.15
 
 require (
 	github.com/gavv/httpexpect/v2 v2.1.0
