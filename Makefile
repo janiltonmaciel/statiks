@@ -20,7 +20,7 @@ SOURCE_FILES?=$$(go list ./... | grep -v /vendor/)
 
 ## Run project http
 run:
-	@go run main.go
+	@go run cmd/statiks.go
 
 ## Run project https
 runs:
@@ -63,7 +63,7 @@ git-tag:
 	rm README.md.bak 2>/dev/null; \
 	git commit README.md -m "Update README.md with release $$TAG"; \
 	git tag -s v$$TAG -m "v$$TAG"; \
-	git push origin $$TAG; \
+	git push origin v$$TAG; \
 	git push origin master; \
 
 

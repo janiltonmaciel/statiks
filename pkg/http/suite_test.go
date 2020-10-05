@@ -1,4 +1,4 @@
-package lib_test
+package http_test
 
 import (
 	"flag"
@@ -7,7 +7,7 @@ import (
 	"testing"
 
 	"github.com/gavv/httpexpect/v2"
-	statiks "github.com/janiltonmaciel/statiks/http"
+	statiks "github.com/janiltonmaciel/statiks/pkg/http"
 	"github.com/urfave/cli/v2"
 	check "gopkg.in/check.v1"
 )

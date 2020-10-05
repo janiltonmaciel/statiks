@@ -1,6 +1,6 @@
 // +build !windows
 
-package lib
+package http
 
 import (
 	"path/filepath"

@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"os"
 
-	statiks "github.com/janiltonmaciel/statiks/http"
+	statiks "github.com/janiltonmaciel/statiks/pkg/http"
 	"github.com/urfave/cli/v2"
 )
 

@@ -1,4 +1,4 @@
-package lib
+package http
 
 // The code is modified from https://golang.org/src/net/http/fs.go.
 

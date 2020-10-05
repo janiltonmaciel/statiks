@@ -1,11 +1,11 @@
-package lib_test
+package http_test
 
 import (
 	"net/http"
 	"os"
 	"time"
 
-	statiks "github.com/janiltonmaciel/statiks/http"
+	statiks "github.com/janiltonmaciel/statiks/pkg/http"
 	check "gopkg.in/check.v1"
 )
 

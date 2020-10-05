@@ -1,4 +1,4 @@
-package lib
+package http
 
 var (
 	NoCacheHandler       = noCacheHandler

@@ -1,9 +1,10 @@
+// Package main implements the runtime CLI application.
 package main
 
 import (
 	"log"
 
-	"github.com/janiltonmaciel/statiks/cmd"
+	"github.com/janiltonmaciel/statiks/pkg/cmd"
 )
 
 var (
