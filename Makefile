@@ -63,7 +63,8 @@ git-tag:
 	rm README.md.bak 2>/dev/null; \
 	git commit README.md -m "Update README.md with release $$TAG"; \
 	git tag -s $$TAG -m "$$TAG"; \
-	git push origin master --tags
+	git push origin $$TAG; \
+	git push origin master; \
 
 
 ## Build project
