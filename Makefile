@@ -62,7 +62,7 @@ git-tag:
 	sed -i.bak "s/statiks_[^_]*/statiks_$$TAG/g" README.md  && \
 	rm README.md.bak 2>/dev/null; \
 	git commit README.md -m "Update README.md with release $$TAG"; \
-	git tag -s $$TAG -m "$$TAG"; \
+	git tag -s v$$TAG -m "v$$TAG"; \
 	git push origin $$TAG; \
 	git push origin master; \
 
