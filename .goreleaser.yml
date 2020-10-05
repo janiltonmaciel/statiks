@@ -13,12 +13,6 @@ builds:
     ignore:
       - goarch: 386
 
-release:
-  github:
-    owner: janiltonmaciel
-    name: statiks
-
-
 # Mac OS Homebrew
 brews:
   -
