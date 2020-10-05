@@ -62,7 +62,9 @@ git-tag:
 	sed -i.bak "s/statiks_[^_]*/statiks_$$TAG/g" README.md  && \
 	rm README.md.bak 2>/dev/null; \
 	git commit README.md -m "Update README.md with release $$TAG"; \
-	git tag -s $$TAG -m "$$TAG"
+	git tag -s $$TAG -m "$$TAG" \
+	git push origin master --tags
+
 
 ## Build project
 build:
@@ -87,7 +89,6 @@ release: git-tag
 	fi; \
 	export GITHUB_TOKEN=$(GITHUB_TOKEN); \
 	goreleaser release --rm-dist; \
-	git push --tags; \
 	echo "Release - OK"
 
 push-release:
