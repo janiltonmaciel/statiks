@@ -51,7 +51,7 @@ statiks [options] <path>
 OPTIONS:
   --host value, -h value  host address to bind to (default: "0.0.0.0") [$HOST]
   --port value, -p value  port number (default: "9080") [$PORT]
-  --quiet, -q             enable quiet mode, don't output each incoming request (default: false)
+  --quiet, -q             enable quiet mode, do not output each incoming request (default: false)
   --add-delay value       add delay to responses (in milliseconds) (default: 0)
   --cache value           set cache time (in seconds) for cache-control max-age header (default: 0)
   --no-index              disable directory listings (default: false)

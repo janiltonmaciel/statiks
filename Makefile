@@ -87,7 +87,7 @@ release: git-tag
 	fi; \
 	export GITHUB_TOKEN=$(GITHUB_TOKEN); \
 	goreleaser release --rm-dist; \
-	git push origin master; \
+	git push --tags; \
 	echo "Release - OK"
 
 push-release:
