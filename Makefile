@@ -62,8 +62,8 @@ git-tag:
 	sed -i.bak "s/statiks_[^_]*/statiks_$$TAG/g" README.md  && \
 	rm README.md.bak 2>/dev/null; \
 	git commit README.md -m "Update README.md with release $$TAG"; \
-	git tag -s v$$TAG -m "v$$TAG"; \
-	git push origin v$$TAG; \
+	git tag -s $$TAG -m "$$TAG"; \
+	git push origin $$TAG; \
 	git push origin master; \
 
 
@@ -95,6 +95,11 @@ release: git-tag
 push-release:
 	export GITHUB_TOKEN=$(GITHUB_TOKEN); \
 	goreleaser release --rm-dist --skip-validate
+
+## Check release
+check-release:
+	export GITHUB_TOKEN=$(GITHUB_TOKEN); \
+	goreleaser release --skip-publish --rm-dist --skip-validate
 
 ## Prints this help
 help:

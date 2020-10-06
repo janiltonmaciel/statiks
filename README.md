@@ -82,6 +82,7 @@ statiks --cors /home
 ```
 
   * start server at http://192.168.1.100:9080 serving "/tmp" with gzip compression
+
 ```bash
 statiks --host 192.168.1.100 --compression /tmp
 ```

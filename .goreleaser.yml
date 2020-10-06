@@ -2,7 +2,7 @@ project_name: statiks
 
 builds:
   -
-    main: ./main.go
+    main: ./cmd/statiks.go
     binary: statiks
     env:
       - CGO_ENABLED=0
@@ -45,9 +45,8 @@ dockers:
       - go.mod
       - go.sum
       - README.md
-      - main.go
+      - pkg
       - cmd
-      - http
 
 changelog:
   sort: asc
