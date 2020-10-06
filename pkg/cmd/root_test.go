@@ -3,6 +3,7 @@ package cmd_test
 import (
 	"flag"
 
+	"github.com/janiltonmaciel/statiks/pkg/cmd"
 	"github.com/urfave/cli/v2"
 	check "gopkg.in/check.v1"
 )

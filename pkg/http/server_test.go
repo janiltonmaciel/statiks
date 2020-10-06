@@ -1,19 +1,18 @@
 package http_test
 
 import (
-	"flag"
 	"net/http"
 
 	statiks "github.com/janiltonmaciel/statiks/pkg/http"
-	"github.com/urfave/cli/v2"
 	check "gopkg.in/check.v1"
 )
 
 func (s *StatiksSuite) TestServerPathDefault(c *check.C) {
-	set := flag.NewFlagSet("test", 0)
-	set.String("host", "localhost", "")
-	set.String("port", "9080", "")
-	e := s.newHTTPTester(set)
+	config := statiks.Config{
+		Host: "localhost",
+		Port: "9080",
+	}
+	e := s.newHTTPTester(config)
 
 	resp := e.GET("/").Expect()
 	resp.Status(http.StatusOK)
@@ -21,9 +20,9 @@ func (s *StatiksSuite) TestServerPathDefault(c *check.C) {
 }
 
 func (s *StatiksSuite) TestServerEnabledIndex(c *check.C) {
-	set := s.newFlagSet()
-	set.Bool("no-index", false, "")
-	e := s.newHTTPTester(set)
+	config := s.newConfig()
+	config.NoIndex = false
+	e := s.newHTTPTester(config)
 
 	resp := e.GET("/").Expect()
 	resp.Status(http.StatusOK)
@@ -41,15 +40,15 @@ func (s *StatiksSuite) TestServerEnabledIndex(c *check.C) {
 	resp.Status(http.StatusOK)
 	resp.Body().Contains("README.md")
 
-	resp = e.GET("/cmd/").Expect()
+	resp = e.GET("/pkg/cmd/").Expect()
 	resp.Status(http.StatusOK)
 	resp.Body().Contains("root.go")
 }
 
 func (s *StatiksSuite) TestServerDisabledIndex(c *check.C) {
-	set := s.newFlagSet()
-	set.Bool("no-index", true, "")
-	e := s.newHTTPTester(set)
+	config := s.newConfig()
+	config.NoIndex = true
+	e := s.newHTTPTester(config)
 
 	resp := e.GET("/").Expect()
 	resp.Status(http.StatusNotFound)
@@ -60,9 +59,9 @@ func (s *StatiksSuite) TestServerDisabledIndex(c *check.C) {
 }
 
 func (s *StatiksSuite) TestServerEnabledAddDelay(c *check.C) {
-	set := s.newFlagSet()
-	set.Int64("add-delay", 100, "")
-	e := s.newHTTPTester(set)
+	config := s.newConfig()
+	config.AddDelay = 100
+	e := s.newHTTPTester(config)
 
 	resp := e.GET("/").Expect()
 	resp.Status(http.StatusOK)
@@ -70,8 +69,9 @@ func (s *StatiksSuite) TestServerEnabledAddDelay(c *check.C) {
 }
 
 func (s *StatiksSuite) TestServerDisabledAddDelay(c *check.C) {
-	set := s.newFlagSet()
-	e := s.newHTTPTester(set)
+	config := s.newConfig()
+	config.AddDelay = 0
+	e := s.newHTTPTester(config)
 
 	resp := e.GET("/").Expect()
 	resp.Status(http.StatusOK)
@@ -79,9 +79,9 @@ func (s *StatiksSuite) TestServerDisabledAddDelay(c *check.C) {
 }
 
 func (s *StatiksSuite) TestServerEnabledCache(c *check.C) {
-	set := s.newFlagSet()
-	set.Int("cache", 10, "")
-	e := s.newHTTPTester(set)
+	config := s.newConfig()
+	config.Cache = 10
+	e := s.newHTTPTester(config)
 
 	resp := e.GET("/").Expect()
 	resp.Status(http.StatusOK)
@@ -90,8 +90,9 @@ func (s *StatiksSuite) TestServerEnabledCache(c *check.C) {
 }
 
 func (s *StatiksSuite) TestServerDisabledCache(c *check.C) {
-	set := s.newFlagSet()
-	e := s.newHTTPTester(set)
+	config := s.newConfig()
+	config.Cache = 0
+	e := s.newHTTPTester(config)
 
 	resp := e.GET("/").Expect()
 	resp.Status(http.StatusOK)
@@ -100,9 +101,9 @@ func (s *StatiksSuite) TestServerDisabledCache(c *check.C) {
 }
 
 func (s *StatiksSuite) TestServerEnabledCompression(c *check.C) {
-	set := s.newFlagSet()
-	set.Bool("compression", true, "")
-	e := s.newHTTPTester(set)
+	config := s.newConfig()
+	config.Compression = true
+	e := s.newHTTPTester(config)
 
 	resp := e.GET("/").WithHeader("Accept-Encoding", "gzip").Expect()
 	resp.Status(http.StatusOK)
@@ -111,9 +112,9 @@ func (s *StatiksSuite) TestServerEnabledCompression(c *check.C) {
 }
 
 func (s *StatiksSuite) TestServerDisabledCompression(c *check.C) {
-	set := s.newFlagSet()
-	set.Bool("compression", true, "")
-	e := s.newHTTPTester(set)
+	config := s.newConfig()
+	config.Compression = false
+	e := s.newHTTPTester(config)
 
 	resp := e.GET("/").Expect()
 	resp.Status(http.StatusOK)
@@ -121,9 +122,9 @@ func (s *StatiksSuite) TestServerDisabledCompression(c *check.C) {
 }
 
 func (s *StatiksSuite) TestServerDisabledCompression2(c *check.C) {
-	set := s.newFlagSet()
-	set.Bool("compression", false, "")
-	e := s.newHTTPTester(set)
+	config := s.newConfig()
+	config.Compression = false
+	e := s.newHTTPTester(config)
 
 	resp := e.GET("/").Expect()
 	resp.Status(http.StatusOK)
@@ -131,9 +132,9 @@ func (s *StatiksSuite) TestServerDisabledCompression2(c *check.C) {
 }
 
 func (s *StatiksSuite) TestServerEnabledIncludeHidden(c *check.C) {
-	set := s.newFlagSet()
-	set.Bool("include-hidden", true, "")
-	e := s.newHTTPTester(set)
+	config := s.newConfig()
+	config.IncludeHidden = true
+	e := s.newHTTPTester(config)
 
 	resp := e.GET("/.gitignore").Expect()
 	resp.Status(http.StatusOK)
@@ -141,27 +142,27 @@ func (s *StatiksSuite) TestServerEnabledIncludeHidden(c *check.C) {
 }
 
 func (s *StatiksSuite) TestServerDisabledIncludeHidden(c *check.C) {
-	set := s.newFlagSet()
-	set.Bool("include-hidden", false, "")
-	e := s.newHTTPTester(set)
+	config := s.newConfig()
+	config.IncludeHidden = false
+	e := s.newHTTPTester(config)
 
 	resp := e.GET("/.gitignore").Expect()
 	resp.Status(http.StatusNotFound)
 }
 
 func (s *StatiksSuite) TestServerEnabledCORS(c *check.C) {
-	set := s.newFlagSet()
-	set.Bool("cors", true, "")
-	e := s.newHTTPTester(set)
+	config := s.newConfig()
+	config.CORS = true
+	e := s.newHTTPTester(config)
 
 	resp := e.OPTIONS("/").Expect()
 	resp.Status(http.StatusOK)
 }
 
 func (s *StatiksSuite) TestServerEnabledSSL(c *check.C) {
-	set := s.newFlagSet()
-	set.Bool("ssl", true, "")
-	e := s.newHTTPTester(set)
+	config := s.newConfig()
+	config.SSL = true
+	e := s.newHTTPTester(config)
 
 	resp := e.GET("/").Expect()
 	resp.Status(http.StatusOK)
@@ -169,16 +170,17 @@ func (s *StatiksSuite) TestServerEnabledSSL(c *check.C) {
 }
 
 func (s *StatiksSuite) TestServerRun(c *check.C) {
-	set := s.newFlagSet()
-	ctx := cli.NewContext(nil, set, nil)
-	config := statiks.NewConfig(ctx)
-	config.Address = "localhost:invalid"
+	config := statiks.Config{
+		Host: "localhost",
+		Port: "invalid",
+		SSL:  false,
+	}
+
 	server := statiks.NewServer(config)
 	err := server.Run()
 	c.Assert(err, check.NotNil)
 
 	config.SSL = true
-	config.Address = "localhost:invalid"
 	server = statiks.NewServer(config)
 	err = server.Run()
 	c.Assert(err, check.NotNil)

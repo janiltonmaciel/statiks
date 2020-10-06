@@ -1,14 +1,12 @@
 package http_test
 
 import (
-	"flag"
 	"fmt"
 	"net/http"
 	"testing"
 
 	"github.com/gavv/httpexpect/v2"
 	statiks "github.com/janiltonmaciel/statiks/pkg/http"
-	"github.com/urfave/cli/v2"
 	check "gopkg.in/check.v1"
 )
 
@@ -26,11 +24,10 @@ func Test(t *testing.T) {
 
 var _ = check.Suite(sSuite)
 
-func (s *StatiksSuite) newHTTPTester(set *flag.FlagSet) *httpexpect.Expect {
-	ctx := cli.NewContext(nil, set, nil)
-	config := statiks.NewConfig(ctx)
+func (s *StatiksSuite) newHTTPTester(config statiks.Config) *httpexpect.Expect {
 	server := statiks.NewServer(config)
-	baseURL := fmt.Sprintf("http://%s", config.Address)
+	address := fmt.Sprintf("%s:%s", config.Host, config.Port)
+	baseURL := fmt.Sprintf("http://%s", address)
 	handler := server.GetHandler()
 	e := httpexpect.WithConfig(httpexpect.Config{
 		BaseURL: baseURL,
@@ -44,16 +41,11 @@ func (s *StatiksSuite) newHTTPTester(set *flag.FlagSet) *httpexpect.Expect {
 }
 
 // nolint
-func (s *StatiksSuite) newFlagSet(paths ...string) *flag.FlagSet {
-	set := flag.NewFlagSet("test", 0)
-	set.String("host", "localhost", "")
-	set.String("port", "9080", "")
-
-	if len(paths) == 0 {
-		paths = []string{".."}
+func (s *StatiksSuite) newConfig(paths ...string) statiks.Config {
+	config := statiks.Config{
+		Host: "localhost",
+		Port: "9080",
+		Path: "../..",
 	}
-	if err := set.Parse(paths); err != nil {
-		s.t.Error(err)
-	}
-	return set
+	return config
 }

@@ -2,8 +2,6 @@ package http_test
 
 import (
 	"flag"
-	"fmt"
-	"time"
 
 	statiks "github.com/janiltonmaciel/statiks/pkg/http"
 	"github.com/urfave/cli/v2"
@@ -33,7 +31,7 @@ func (s *StatiksSuite) TestConfig(c *check.C) {
 	c.Assert(config.Host, check.Equals, "localhost")
 	c.Assert(config.Port, check.Equals, "1080")
 	c.Assert(config.Quiet, check.Equals, true)
-	c.Assert(config.Delay, check.Equals, 100*time.Millisecond)
+	c.Assert(config.AddDelay, check.Equals, 100)
 	c.Assert(config.Cache, check.Equals, 10)
 	c.Assert(config.NoIndex, check.Equals, true)
 	c.Assert(config.Compression, check.Equals, true)
@@ -43,5 +41,4 @@ func (s *StatiksSuite) TestConfig(c *check.C) {
 	c.Assert(config.Cert, check.Equals, "cert123.pem")
 	c.Assert(config.Key, check.Equals, "key123.pem")
 	c.Assert(config.Path, check.Equals, "path")
-	c.Assert(config.Address, check.Equals, fmt.Sprintf("%s:%s", "localhost", "1080"))
 }

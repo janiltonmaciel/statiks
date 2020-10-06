@@ -9,10 +9,7 @@ import (
 
 func ExampleNewServer() {
 	config := http.Config{}
-	server, err := statiks.NewServer(config)
-	if err != nil {
-		log.Fatal(err)
-	}
+	server := statiks.NewServer(config)
 
 	if err := server.Run(); err != nil {
 		log.Fatal(err)

@@ -69,7 +69,7 @@ func serveFile(w http.ResponseWriter, r *http.Request, fh *fileHandler, name str
 
 	fs := fh.root
 	config := fh.config
-	defer func() { fh.config.firstRequest = false }()
+	defer func() { fh.config.FirstRequest = false }()
 
 	// redirect .../index.html to .../
 	// can't use Redirect() because that would make the path absolute,
@@ -223,7 +223,7 @@ func checkIfModifiedSince(r *http.Request, modtime time.Time, config Config) con
 		return condNone
 	}
 
-	if config.firstRequest {
+	if config.FirstRequest {
 		return condNone
 	}
 

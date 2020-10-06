@@ -20,6 +20,8 @@ type Server struct {
 
 // NewServer return server implements the static http server.
 func NewServer(config Config) *Server {
+	config.init()
+
 	docroot, err := filepath.Abs(config.Path)
 	if err != nil {
 		panic(err)

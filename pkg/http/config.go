@@ -8,14 +8,18 @@ import (
 	"github.com/urfave/cli/v2"
 )
 
+var hostReplacer = strings.NewReplacer(
+	"http://", "",
+	"https://", "",
+)
+
 // Config configure http server command.
 type Config struct {
-	Address       string
 	Path          string
 	Host          string
 	Port          string
+	AddDelay      int
 	Quiet         bool
-	Delay         time.Duration
 	Cache         int
 	NoIndex       bool
 	Compression   bool
@@ -25,22 +29,19 @@ type Config struct {
 	Cert          string
 	Key           string
 
+	Delay        time.Duration
+	Address      string
 	HasCache     bool
-	firstRequest bool
+	FirstRequest bool
 }
-
-var hostReplacer = strings.NewReplacer(
-	"http://", "",
-	"https://", "",
-)
 
 // NewConfig create config http server command.
 func NewConfig(c *cli.Context) (config Config) {
-	config.Host = getHostAddress(c)
-	config.Path = getPath(c)
+	config.Path = c.Args().Get(0)
+	config.Host = c.String("host")
 	config.Port = c.String("port")
 	config.Quiet = c.Bool("quiet")
-	config.Delay = getDelay(c)
+	config.AddDelay = c.Int("add-delay")
 	config.Cache = c.Int("cache")
 	config.NoIndex = c.Bool("no-index")
 	config.Compression = c.Bool("compression")
@@ -50,30 +51,30 @@ func NewConfig(c *cli.Context) (config Config) {
 	config.Cert = c.String("cert")
 	config.Key = c.String("key")
 
-	config.Address = fmt.Sprintf("%s:%s", config.Host, config.Port)
-	config.firstRequest = true
-	config.HasCache = false
-	if config.Cache > 0 {
-		config.HasCache = true
-	}
-
 	return config
 }
 
-func getPath(c *cli.Context) (path string) {
-	path = strings.TrimSpace(c.Args().Get(0))
-	if path == "" {
-		path = "."
+func (conf *Config) init() {
+	if conf.Host == "" {
+		conf.Host = "0.0.0.0"
+	} else {
+		conf.Host = hostReplacer.Replace(conf.Host)
 	}
-	return path
-}
 
-func getHostAddress(c *cli.Context) string {
-	host := c.String("host")
-	return hostReplacer.Replace(host)
-}
+	conf.Path = strings.TrimSpace(conf.Path)
+	if conf.Path == "" {
+		conf.Path = "."
+	}
 
-func getDelay(c *cli.Context) time.Duration {
-	delay := c.Int64("add-delay")
-	return time.Duration(delay) * time.Millisecond
+	if conf.Port == "" {
+		conf.Port = "9080"
+	}
+
+	conf.Delay = time.Duration(conf.AddDelay) * time.Millisecond
+	conf.Address = fmt.Sprintf("%s:%s", conf.Host, conf.Port)
+	conf.FirstRequest = true
+	conf.HasCache = false
+	if conf.Cache > 0 {
+		conf.HasCache = true
+	}
 }
