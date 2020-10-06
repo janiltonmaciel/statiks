@@ -7,6 +7,7 @@ Like Python's `SimpleHTTPServer` but scalable.
 [![Go Report Card](https://goreportcard.com/badge/github.com/janiltonmaciel/statiks)](https://goreportcard.com/report/github.com/janiltonmaciel/statiks)
 [![Build Status](https://travis-ci.org/janiltonmaciel/statiks.svg?branch=master)](https://travis-ci.org/janiltonmaciel/statiks)
 [![codecov](https://codecov.io/gh/janiltonmaciel/statiks/branch/master/graph/badge.svg)](https://codecov.io/gh/janiltonmaciel/statiks)
+[![Mentioned in Awesome Go](https://awesome.re/mentioned-badge.svg)](https://github.com/avelino/awesome-go)
 
 ## Features
 

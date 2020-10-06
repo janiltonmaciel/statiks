@@ -8,7 +8,10 @@ import (
 )
 
 func ExampleNewServer() {
-	config := http.Config{}
+	config := http.Config{
+		Host: "localhost",
+		Port: "9080",
+	}
 	server := statiks.NewServer(config)
 
 	if err := server.Run(); err != nil {
