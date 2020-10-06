@@ -13,6 +13,11 @@ builds:
     ignore:
       - goarch: 386
 
+archives:
+  -
+    name_template: "{{ .ProjectName }}_v{{ .Version }}_{{ .Os }}_{{ .Arch }}"
+
+
 # Mac OS Homebrew
 brews:
   -
