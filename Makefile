@@ -70,7 +70,7 @@ git-tag:
 ## Build project
 build:
 	echo "Building $(PROJECT)"
-	go build -ldflags "$(LDFLAGS) -w -s" -o $(PROJECT) main.go
+	go build -ldflags "$(LDFLAGS) -w -s" -o $(PROJECT) cmd/statiks.go
 
 ## Build Docker Image (uses docker multi-stage builds)
 docker:
